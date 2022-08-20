@@ -2,7 +2,12 @@ import React, { ReactElement } from "react";
 
 import type { GetServerSideProps } from "next";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import HeaderFooterLayout from "@/components/layouts/headerFooter";
+import { CustomPageProps, NextPageWithLayout } from "@/types/page";
+
+export const getServerSideProps: GetServerSideProps<
+  CustomPageProps
+> = async () => {
   return {
     props: {
       isIndex: true,
@@ -10,8 +15,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-const HomePage = () => {
+const HomePage: NextPageWithLayout = () => {
   return <p>hello world</p>;
+};
+
+HomePage.getLayout = (page: ReactElement) => {
+  return <HeaderFooterLayout>{page}</HeaderFooterLayout>;
 };
 
 export default HomePage;
