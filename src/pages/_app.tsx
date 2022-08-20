@@ -1,10 +1,10 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { useReducer } from "react";
 
 import type { AppProps } from "next/app";
 
-import { CustomPageProps, NextPageWithLayout } from "@/types/page";
+import Meta from "@/components/meta";
 import { theme } from "@/libs/theme";
+import { CustomPageProps, NextPageWithLayout } from "@/types/page";
 
 interface CustomAppProps extends AppProps {
   Component: NextPageWithLayout;
@@ -19,6 +19,12 @@ function MyApp({ Component, pageProps }: CustomAppProps) {
 
   return (
     <>
+      <Meta
+        title={title}
+        description={description}
+        keywords={keywords}
+        isIndex={isIndex}
+      />
       <ChakraProvider theme={theme}>
         {getLayout(<Component {...otherPageProps} />)}
       </ChakraProvider>
