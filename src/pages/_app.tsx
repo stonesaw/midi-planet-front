@@ -4,6 +4,7 @@ import { useReducer } from "react";
 import type { AppProps } from "next/app";
 
 import { CustomPageProps, NextPageWithLayout } from "@/types/page";
+import { theme } from "@/libs/theme";
 
 interface CustomAppProps extends AppProps {
   Component: NextPageWithLayout;
@@ -18,7 +19,7 @@ function MyApp({ Component, pageProps }: CustomAppProps) {
 
   return (
     <>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         {getLayout(<Component {...otherPageProps} />)}
       </ChakraProvider>
     </>
