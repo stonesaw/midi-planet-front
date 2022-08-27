@@ -1,4 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import type { AppProps } from "next/app";
 
@@ -26,7 +28,9 @@ function MyApp({ Component, pageProps }: CustomAppProps) {
         isIndex={isIndex}
       />
       <ChakraProvider theme={theme}>
-        {getLayout(<Component {...otherPageProps} />)}
+        <DndProvider backend={HTML5Backend}>
+          {getLayout(<Component {...otherPageProps} />)}
+        </DndProvider>
       </ChakraProvider>
     </>
   );
