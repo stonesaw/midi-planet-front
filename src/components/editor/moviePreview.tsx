@@ -11,6 +11,7 @@ import {
 } from "react";
 
 import { floorAt, toMinutes } from "@/libs/utils";
+import Shape from "@/model/editor/shape";
 
 const Sketch = dynamic(import("react-p5"), {
   ssr: false,
@@ -29,6 +30,25 @@ const offsetX = 0; // MIDI表示開始位置
 const offsetY = 300; // MIDI表示開始位置
 const noteWidth = 40; // 4分音符の横幅
 const noteHeight = 10; // 4分音符音符の高さ
+
+// TODO: use Context
+const shapes = [
+  new Shape(640, 360, 100, 50, "#123456"),
+  new Shape(540, 260, 60, 50, "#123456", { radius: [10] }),
+  new Shape(640, 260, 60, 50, "#123456", { radius: [25] }),
+  new Shape(100, 200, 100, 50, "#eee", { border: { size: 1, color: "#000" } }),
+  new Shape(100, 300, 100, 50, [255, 100, 100], {
+    alpha: 50,
+    radius: [10],
+    border: { size: 1, color: "#fff" },
+  }),
+  new Shape(130, 330, 100, 50, [100, 255, 100], {
+    alpha: 50,
+    radius: [10],
+    border: { size: 1, color: "#fff" },
+  }),
+  new Shape(130, 500, 60, 30, [100, 255, 100]),
+];
 
 export interface MoviePreviewHandler {
   loadMidi(midi: string): void;
@@ -70,9 +90,12 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
   };
 
   const draw = (p5: p5Types) => {
-    // update process
+    // reset window
     p5.clear();
+    p5.noStroke();
+    p5.fill(p5.color("#ffffff"));
 
+    // update process
     beforeTime = currentTime;
     currentTime = p5.millis();
     fps = 1.0 / ((currentTime - beforeTime) / 1000);
@@ -97,8 +120,11 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
     }
 
     // draw background
-    p5.fill(p5.color("#cccccc"));
+    p5.fill(p5.color("#ffffff"));
     p5.rect(0, 0, p5.width, p5.height);
+
+    // draw shapes
+    shapes.forEach((shape) => shape.draw(p5, currentTime));
 
     // draw midi
     if (midi) {
@@ -121,6 +147,7 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
 
       // debug log
       p5.fill(p5.color("#000"));
+      p5.noStroke();
       p5.textSize(16);
       p5.text(`midi loaded (${notes.length} notes)`, 200, 16);
       p5.text(`bpm: ${bpm}`, 200, 32);
@@ -130,6 +157,7 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
     // debag log
     p5.fill(p5.color("#000000"));
     p5.textSize(16);
+    p5.noStroke();
     p5.text("passed: " + toMinutes(p5.millis()), 0, 16);
     p5.text(`FPS: ${floorAt(fps, 0.1)}`, 0, 32);
     p5.text(`played: ${played}`, 0, 48);
@@ -144,8 +172,17 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
   };
 
   const windowResized = (p5: p5Types) => {
-    p5.print("resize window");
-    p5.resizeCanvas(document.body.clientWidth, p5.windowHeight);
+    // TODO: レイアウトの変更に合わせて、ここを変える
+    const parentWidth = document.body.clientWidth;
+    const parentHeight = p5.windowHeight;
+
+    if (parentWidth / parentHeight > 16 / 9) {
+      // 横長だったとき
+      p5.resizeCanvas((parentHeight * 16) / 9, parentHeight);
+    } else {
+      // 縦長だったとき
+      p5.resizeCanvas(parentWidth, (parentWidth / 16) * 9);
+    }
   };
 
   return (
@@ -154,6 +191,11 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
       setup={setup}
       draw={draw}
       windowResized={windowResized}
+      style={{
+        display: "flex",
+        "justify-content": "center",
+        "align-items": "center",
+      }}
     />
   );
 });
