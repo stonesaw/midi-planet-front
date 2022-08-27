@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 
 import type { GetServerSideProps } from "next";
 
@@ -19,8 +19,6 @@ const HomePage: NextPageWithLayout = () => {
   return <p>hello world</p>;
 };
 
-HomePage.getLayout = (page: ReactElement) => {
-  return <HeaderFooterLayout>{page}</HeaderFooterLayout>;
-};
+HomePage.getLayout = (page) => <HeaderFooterLayout>{page}</HeaderFooterLayout>;
 
 export default HomePage;

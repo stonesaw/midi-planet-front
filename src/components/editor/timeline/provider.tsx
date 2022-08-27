@@ -77,7 +77,6 @@ export const TimelineProvider = ({ children }: Props) => {
       }}
     >
       {children}
-      <p>{JSON.stringify(timelineItems)}</p>
     </TimelineContext.Provider>
   );
 };
