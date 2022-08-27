@@ -3,14 +3,16 @@ import { MidiJSON } from "@tonejs/midi";
 const TIMELINE_BAR_KINDS = {
   shape: "SHAPE",
   midi: "MIDI",
-  audio_visualizer: "AUDIO VISUALIZER",
+  advz: "AUDIO VISUALIZER",
 } as const;
 
 export interface BaseTimelineItem {
+  id: number;
   kind: keyof typeof TIMELINE_BAR_KINDS;
   color: string;
   position: number;
   depth: number;
+  width: number;
   midi?: MidiJSON;
 }
 
@@ -24,7 +26,7 @@ export interface MidiTimelineItem extends BaseTimelineItem {
 }
 
 export interface AudioVisualizerTimelineItem extends BaseTimelineItem {
-  kind: "audio_visualizer";
+  kind: "advz";
 }
 
 export type TimelineItem =
