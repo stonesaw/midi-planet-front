@@ -1,16 +1,27 @@
-import { VStack } from "@chakra-ui/react";
+import { Grid, HStack, VStack } from "@chakra-ui/react";
 
-import { EditorCanvas } from "@/components/editor/canvas";
-import { EditorTimeline } from "@/components/editor/timeline";
+import { CanvasEditor } from "@/components/editor/canvas";
+import { HeaderEditor } from "@/components/editor/header";
+import { ParamsEditor } from "@/components/editor/params";
+import { TimelineEditor } from "@/components/editor/timeline";
 import VanillaLayout from "@/components/layouts/vanilla";
+import { EditorProvider } from "@/providers/editor";
 import { NextPageWithLayout } from "@/types/page";
 
 const Editor: NextPageWithLayout = () => {
   return (
-    <VStack align="flex-start">
-      <EditorCanvas />
-      <EditorTimeline />
-    </VStack>
+    <EditorProvider>
+      <Grid templateColumns="100%" templateRows="auto 1fr" minH="100vh">
+        <HeaderEditor />
+        <HStack>
+          <VStack align="flex-start" width="300px">
+            <CanvasEditor />
+            <TimelineEditor />
+          </VStack>
+          <ParamsEditor />
+        </HStack>
+      </Grid>
+    </EditorProvider>
   );
 };
 
