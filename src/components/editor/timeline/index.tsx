@@ -11,10 +11,10 @@ export const TimelineEditor = () => {
         background="#292c36"
         borderRadius="md"
         overflowX="scroll"
-        margin="2"
         padding="2"
         pt="0"
         width="100%"
+        height="100%"
       >
         <VStack align="stretch" width="fit-content">
           <TimelineScale />

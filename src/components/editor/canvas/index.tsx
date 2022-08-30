@@ -1,5 +1,12 @@
 import { MoviePreview } from "./moviePreview";
 
-export const CanvasEditor = () => {
-  return <MoviePreview />;
+interface Props {
+  maxSize: {
+    width: number;
+    height: number;
+  };
+}
+
+export const CanvasEditor = ({ maxSize }: Props) => {
+  return <MoviePreview maxSize={maxSize} />;
 };

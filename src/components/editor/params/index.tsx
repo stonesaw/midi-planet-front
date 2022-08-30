@@ -4,7 +4,16 @@ import { AppearanceParamsEditor } from "@/components/editor/params/sections/appe
 
 export const ParamsEditor = () => {
   return (
-    <VStack align="stretch" width="fit-content">
+    <VStack
+      align="stretch"
+      flex="1"
+      background="#292c36"
+      borderRadius="md"
+      overflowX="scroll"
+      p="4"
+      w="100%"
+      h="100%"
+    >
       <AppearanceParamsEditor />
       <Divider orientation="horizontal" colorScheme="white.700" />
     </VStack>

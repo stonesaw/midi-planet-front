@@ -44,9 +44,15 @@ const shapes = [
   new Shape(130, 500, 60, 30, [100, 255, 100]),
 ];
 
-// eslint-disable-next-line react/display-name
-export const MoviePreview = () => {
-  const { midi, audioState, setAudioState } = useEditor();
+interface Props {
+  maxSize: {
+    width: number;
+    height: number;
+  };
+}
+
+export const MoviePreview = ({ maxSize }: Props) => {
+  const { midi, audioState } = useEditor();
 
   const [timer, setTimer] = useState<number>(0); // 再生時間 (ミリ秒)
   const [beatCounter, setBeatCounter] = useState<number>(0); // 拍子のカウント
@@ -144,16 +150,16 @@ export const MoviePreview = () => {
   };
 
   const windowResized = (p5: p5Types) => {
-    // TODO: レイアウトの変更に合わせて、ここを変える
-    const parentWidth = document.body.clientWidth;
-    const parentHeight = p5.windowHeight;
+    const ASPECT_RATIO = 16 / 9;
+    const parentWidth = maxSize.width;
+    const parentHeight = maxSize.height;
 
-    if (parentWidth / parentHeight > 16 / 9) {
+    if (parentWidth / parentHeight > ASPECT_RATIO) {
       // 横長だったとき
-      p5.resizeCanvas((parentHeight * 16) / 9, parentHeight);
+      p5.resizeCanvas(parentHeight * ASPECT_RATIO, parentHeight);
     } else {
       // 縦長だったとき
-      p5.resizeCanvas(parentWidth, (parentWidth / 16) * 9);
+      p5.resizeCanvas(parentWidth, parentWidth / ASPECT_RATIO);
     }
   };
 
@@ -167,6 +173,7 @@ export const MoviePreview = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        width: "100%",
       }}
     />
   );
