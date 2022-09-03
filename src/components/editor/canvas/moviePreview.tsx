@@ -1,36 +1,38 @@
-import { NoteJSON } from "@tonejs/midi/dist/Note";
 import dynamic from "next/dynamic";
 import p5Types from "p5";
 import { useState } from "react";
 
 import { floorAt, toMinutes } from "@/libs/utils";
+import MIDI from "@/model/editor/midi";
 import Shape from "@/model/editor/shape";
+import Text from "@/model/editor/text";
 import { useEditor } from "@/providers/editor";
 
 const Sketch = dynamic(import("react-p5"), {
   ssr: false,
 });
 
+// timer
 let currentTime = 0; // 経過時間 (ミリ秒)
 let beforeTime = 0; // 1フレーム前のミリ秒
 let beforePlayed = false; // 再生イベントを発火するために使う
 let startTime = 0;
+
+// canvas
 let fps = 0;
+
+// midi
 let bpm = 0;
-let beats: number[] = [0, 0];
-let ppq = 0; // 4分音符あたりのtick数 Pulses per quarter note
-let notes: NoteJSON[] = [];
-const offsetX = 0; // MIDI表示開始位置
-const offsetY = 300; // MIDI表示開始位置
-const noteWidth = 40; // 4分音符の横幅
-const noteHeight = 10; // 4分音符音符の高さ
+let beats: [number, number] = [0, 0];
 
 // TODO: use Context
-const shapes = [
+
+const objects: (Shape | Text | MIDI)[] = [
   new Shape(640, 360, 100, 50, "#123456"),
-  new Shape(540, 260, 60, 50, "#123456", { radius: [10] }),
-  new Shape(640, 260, 60, 50, "#123456", { radius: [25] }),
-  new Shape(100, 200, 100, 50, "#eee", { border: { size: 1, color: "#000" } }),
+  new Shape(100, 200, 100, 50, "#eee", {
+    radius: [10, 20, 10, 20],
+    border: { size: 1, color: "#000" },
+  }),
   new Shape(100, 300, 100, 50, [255, 100, 100], {
     alpha: 50,
     radius: [10],
@@ -41,7 +43,17 @@ const shapes = [
     radius: [10],
     border: { size: 1, color: "#fff" },
   }),
-  new Shape(130, 500, 60, 30, [100, 255, 100]),
+  new Shape(130, 500, 60, 30, [100, 255, 100], {
+    duration: { startMs: 0, endMs: 1000 },
+  }),
+  new Shape(130, 500, 60, 30, [100, 255, 100], {
+    duration: { startMs: 2000, endMs: 3000 },
+  }),
+  new Shape(130, 500, 60, 30, [100, 255, 100], { duration: { startMs: 4000 } }),
+  new Shape(230, 500, 60, 30, [100, 255, 100], { duration: { endMs: 4000 } }),
+  new Shape(600, 60, 640, 100, [0, 255, 255]),
+  new Text(604, 54, "Hello, World!", 100, "#0cc"),
+  new Text(600, 50, "Hello, World!", 100, "#fff"),
 ];
 
 interface Props {
@@ -68,6 +80,7 @@ export const MoviePreview = ({ maxSize }: Props) => {
   const draw = (p5: p5Types) => {
     // reset window
     p5.clear();
+    p5.rectMode(p5.CORNER);
     p5.noStroke();
     p5.fill(p5.color("#ffffff"));
 
@@ -100,35 +113,37 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.fill(p5.color("#ffffff"));
     p5.rect(0, 0, p5.width, p5.height);
 
-    // draw shapes
-    shapes.forEach((shape) => shape.draw(p5, currentTime));
+    // draw objects
+    objects.forEach((obj) => obj.draw(p5, currentTime));
+
+    p5.textSize(16);
+    p5.fill(50);
+    p5.text("hello", 200, 100, 100, 100);
 
     // draw midi
     if (midi) {
+      objects.push(
+        new MIDI(
+          midi,
+          100,
+          100,
+          520,
+          520,
+          "#eee",
+          new Shape(0, 0, 40, 10, "#5BE8FD")
+        )
+      );
+      p5.print("midi");
+
       bpm = midi.header.tempos[0].bpm;
-      beats = midi.header.timeSignatures[0].timeSignature;
-      ppq = midi.header.ppq;
-      notes = midi.tracks[0].notes;
+      beats = [
+        midi.header.timeSignatures[0].timeSignature[0],
+        midi.header.timeSignatures[0].timeSignature[1],
+      ];
+      // ppq = midi.header.ppq;
+      // notes = midi.tracks[0].notes;
 
-      for (let i = 0; i < notes.length; i++) {
-        const note: NoteJSON = notes[i];
-        // note.midi C3 is 48
-        p5.fill(p5.color("#5BE8FD"));
-        p5.rect(
-          offsetX + (noteWidth * note.ticks) / ppq,
-          offsetY - (note.midi - 48) * noteHeight,
-          (noteWidth * note.durationTicks) / ppq - 1,
-          noteHeight - 1
-        );
-      }
-
-      // debug log
-      p5.fill(p5.color("#000"));
-      p5.noStroke();
-      p5.textSize(16);
-      p5.text(`midi loaded (${notes.length} notes)`, 200, 16);
-      p5.text(`bpm: ${bpm}`, 200, 32);
-      p5.text(`beat: ${beats[0]}/${beats[1]}`, 200, 48);
+      setMidi(null);
     }
 
     // debag log
