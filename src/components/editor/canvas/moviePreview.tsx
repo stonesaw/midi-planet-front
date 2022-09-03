@@ -1,17 +1,11 @@
-import { MidiJSON } from "@tonejs/midi";
 import { NoteJSON } from "@tonejs/midi/dist/Note";
 import dynamic from "next/dynamic";
 import p5Types from "p5";
-import {
-  useState,
-  forwardRef,
-  useImperativeHandle,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { useState } from "react";
 
 import { floorAt, toMinutes } from "@/libs/utils";
 import Shape from "@/model/editor/shape";
+import { useEditor } from "@/providers/editor";
 
 const Sketch = dynamic(import("react-p5"), {
   ssr: false,
@@ -50,36 +44,18 @@ const shapes = [
   new Shape(130, 500, 60, 30, [100, 255, 100]),
 ];
 
-export interface MoviePreviewHandler {
-  loadMidi(midi: string): void;
-  setTime(msec: number): void;
-  setPlayed: Dispatch<SetStateAction<boolean>>;
-  played: boolean;
+interface Props {
+  maxSize: {
+    width: number;
+    height: number;
+  };
 }
 
-// eslint-disable-next-line react/display-name
-export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
-  const [midi, setMidi] = useState<MidiJSON | null>(null);
+export const MoviePreview = ({ maxSize }: Props) => {
+  const { midi, audioState } = useEditor();
+
   const [timer, setTimer] = useState<number>(0); // 再生時間 (ミリ秒)
   const [beatCounter, setBeatCounter] = useState<number>(0); // 拍子のカウント
-  const [played, setPlayed] = useState<boolean>(false); // 初期値は false のみ設定可能
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      loadMidi(midi: string) {
-        setMidi(JSON.parse(midi) as MidiJSON);
-      },
-
-      setTime(msec = 0) {
-        setTimer(msec);
-      },
-
-      setPlayed: setPlayed,
-      played: played,
-    }),
-    [played]
-  );
 
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     p5.createCanvas(100, 100).parent(canvasParentRef);
@@ -101,8 +77,8 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
     fps = 1.0 / ((currentTime - beforeTime) / 1000);
 
     // timer
-    if (played !== beforePlayed) {
-      if (played) {
+    if ((audioState === "play") !== beforePlayed) {
+      if (audioState === "play") {
         // p5.print("start! (0)");
         startTime = currentTime;
         (currentTime - startTime) / 1000;
@@ -110,9 +86,10 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
         // p5.print(`stop! (${floorAt(timer / 1000, 0.01)})`);
       }
     }
-    beforePlayed = played;
 
-    if (played) {
+    beforePlayed = audioState === "play";
+
+    if (audioState === "play") {
       setTimer(currentTime - startTime);
       if (midi) {
         setBeatCounter(Math.floor((timer / 1000) * (bpm / 60)));
@@ -160,7 +137,8 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
     p5.noStroke();
     p5.text("passed: " + toMinutes(p5.millis()), 0, 16);
     p5.text(`FPS: ${floorAt(fps, 0.1)}`, 0, 32);
-    p5.text(`played: ${played}`, 0, 48);
+    p5.text(`a: ${audioState}`, 0, 150);
+    p5.text(`played: ${audioState === "play"}`, 0, 48);
     p5.text(`timer: ${floorAt(timer / 1000, 0.01)}`, 0, 64);
     p5.text(
       `beat: ${beatCounter} ${
@@ -172,16 +150,16 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
   };
 
   const windowResized = (p5: p5Types) => {
-    // TODO: レイアウトの変更に合わせて、ここを変える
-    const parentWidth = document.body.clientWidth;
-    const parentHeight = p5.windowHeight;
+    const ASPECT_RATIO = 16 / 9;
+    const parentWidth = maxSize.width;
+    const parentHeight = maxSize.height;
 
-    if (parentWidth / parentHeight > 16 / 9) {
+    if (parentWidth / parentHeight > ASPECT_RATIO) {
       // 横長だったとき
-      p5.resizeCanvas((parentHeight * 16) / 9, parentHeight);
+      p5.resizeCanvas(parentHeight * ASPECT_RATIO, parentHeight);
     } else {
       // 縦長だったとき
-      p5.resizeCanvas(parentWidth, (parentWidth / 16) * 9);
+      p5.resizeCanvas(parentWidth, parentWidth / ASPECT_RATIO);
     }
   };
 
@@ -193,11 +171,12 @@ export const MoviePreview = forwardRef<MoviePreviewHandler>((props, ref) => {
       windowResized={windowResized}
       style={{
         display: "flex",
-        "justify-content": "center",
-        "align-items": "center",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
       }}
     />
   );
-});
+};
 
 export default MoviePreview;
