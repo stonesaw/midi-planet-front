@@ -8,7 +8,7 @@ interface ContextProps {
   audioSrc: string | null;
   setAudioSrc: (src: string) => void;
   midi: MidiJSON | null;
-  setMidi: (midi: MidiJSON) => void;
+  setMidi: (midi: MidiJSON | null) => void;
 }
 
 const EditorContext = createContext<ContextProps>({
