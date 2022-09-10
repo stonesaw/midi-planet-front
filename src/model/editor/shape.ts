@@ -1,42 +1,37 @@
 import p5Types from "p5";
 
-import { BasicObject, Duration } from "./basicObject";
+import { BaseElement } from "./baseElement";
 
-interface ShapeBorder {
-  size: number;
-  color: string;
-}
+import { IShape, Border, Color, Radius } from "@/types/editor/element";
 
-class Shape extends BasicObject {
-  width: number;
-  height: number;
-  color: [number, number, number]; // [r, g, b] r,g,b = (0-255),
-  alpha: number; // 0-100
-  radius?: number[]; // [all] | [top-left, top-right, bottom-right, bottom-left]
-  border?: ShapeBorder;
+class Shape extends BaseElement implements IShape {
+  type!: "SHAPE";
+  radius?: Radius; // [all] | [top-left, top-right, bottom-right, bottom-left]
+  border?: Border;
 
   constructor(
     x: number,
     y: number,
     width: number,
     height: number,
-    color: string | [number, number, number],
+    background: Color,
     option?: {
-      alpha?: number;
-      radius?: number[];
-      border?: ShapeBorder;
-      duration?: Duration;
+      startMs?: number;
+      endMs?: number;
+      radius?: Radius;
+      border?: Border;
     }
   ) {
-    super(x, y, option?.duration);
-    this.width = width;
-    this.height = height;
-    if (typeof color == "string") {
-      this.color = this.hex2rgb(color);
-    } else {
-      this.color = color;
-    }
-    this.alpha = option?.alpha || 100;
+    super(
+      "Shape",
+      x,
+      y,
+      width,
+      height,
+      background,
+      option?.startMs,
+      option?.endMs
+    );
     this.radius = option?.radius;
     this.border = option?.border;
   }
@@ -47,18 +42,19 @@ class Shape extends BasicObject {
     }
 
     if (this.border) {
-      p5.stroke(p5.color(this.border.color));
+      p5.stroke(p5.color(...this.border.color.rgb, this.border.color.alpha));
+      p5.strokeWeight(this.toRealX(p5, this.border.size));
     } else {
       p5.noStroke();
     }
 
-    p5.fill(p5.color(...this.color, this.alpha * 2.55));
+    p5.fill(p5.color(...this.background.rgb, this.background.alpha));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),
       this.toRealX(p5, this.width),
       this.toRealY(p5, this.height),
-      ...(this.radius ? this.radius : [0])
+      ...(this.radius ? Object.values(this.radius) : [0])
     );
   }
 }

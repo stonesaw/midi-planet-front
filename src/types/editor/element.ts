@@ -1,49 +1,45 @@
-interface Color {
-  rgb: [number, number, number];
-  alpha: string;
+export interface Color {
+  rgb: [number, number, number]; // 0-255
+  alpha: number; // 0 to 255
 }
 
-interface Border {
+export interface Border {
   size: number;
   color: Color;
 }
 
-interface Position {
-  x: number;
-  y: number;
-}
-
-interface Radius {
+export interface Radius {
   topLeft: number;
   topRight: number;
   bottomLeft: number;
   bottomRight: number;
 }
 
-interface BaseElement {
-  type: string;
+export interface IBaseElement {
+  type?: string;
   name: string;
-  position: Position;
+  x: number;
+  y: number;
   width: number;
   height: number;
   background: Color;
-  border?: Border;
-  startMS?: number;
+  startMs?: number;
   endMs?: number;
 }
 
-interface Shape extends BaseElement {
+export interface IShape extends IBaseElement {
   type: "SHAPE";
-  radius: Radius;
+  radius?: Radius;
+  border?: Border;
 }
 
-interface Midi extends BaseElement {
+export interface IMidi extends IBaseElement {
   type: "MIDI";
-  animation: "sep4" | "sep4" | "sep8" | "scroll";
-  shape: Shape;
+  animation: "sep2" | "sep4" | "sep8" | "scroll";
+  shape: IShape;
 }
 
-interface Text extends BaseElement {
+export interface IText extends IBaseElement {
   type: "TEXT";
   text: string;
   color: Color;
@@ -51,4 +47,4 @@ interface Text extends BaseElement {
   font?: string;
 }
 
-export type Element = Shape | Midi | Text;
+export type Element = IShape | IMidi | IText;

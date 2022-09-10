@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import p5Types from "p5";
 import { useState } from "react";
 
-import { floorAt, toMinutes } from "@/libs/utils";
+import { floorAt, toColor, toMinutes, toRadius } from "@/libs/utils";
 import MIDI from "@/model/editor/midi";
 import Shape from "@/model/editor/shape";
 import Text from "@/model/editor/text";
@@ -27,33 +27,48 @@ let bpm = 0;
 // TODO: use Context
 
 const objects: (Shape | Text | MIDI)[] = [
-  new Shape(100, 200, 100, 50, "#eee", {
-    radius: [10, 20, 10, 20],
-    border: { size: 1, color: "#000" },
+  new Shape(100, 200, 100, 50, toColor("#abc"), {
+    radius: toRadius([10, 25, 10, 25]),
+    border: { size: 1, color: toColor("#000") },
   }),
-  new Shape(100, 300, 100, 50, [255, 100, 100], {
-    alpha: 50,
-    radius: [10],
-    border: { size: 1, color: "#fff" },
+  new Shape(100, 300, 100, 50, toColor([255, 100, 100], 120), {
+    radius: toRadius([10]),
   }),
-  new Shape(130, 330, 100, 50, [100, 255, 100], {
-    alpha: 50,
-    radius: [10],
-    border: { size: 1, color: "#fff" },
+  new Shape(130, 330, 100, 50, toColor([100, 255, 255], 120), {
+    radius: toRadius([10]),
   }),
-  new Shape(130, 500, 60, 30, [100, 255, 100], {
-    duration: { startMs: 0, endMs: 1000 },
+  new Shape(130, 500, 60, 30, toColor([100, 255, 100]), {
+    startMs: 0,
+    endMs: 1000,
   }),
-  new Shape(130, 500, 60, 30, [100, 255, 100], {
-    duration: { startMs: 2000, endMs: 3000 },
+  new Shape(130, 500, 60, 30, toColor([100, 255, 100]), {
+    startMs: 2000,
+    endMs: 3000,
   }),
-  new Shape(130, 500, 60, 30, [100, 255, 100], { duration: { startMs: 4000 } }),
-  new Shape(230, 500, 60, 30, [100, 255, 100], { duration: { endMs: 4000 } }),
-  new Shape(600, 60, 640, 100, [0, 255, 255]),
-  new Text(604, 54, "Hello, World!", 100, "#0cc"),
-  new Text(600, 50, "Hello, World!", 100, "#fff"),
+  new Shape(130, 500, 60, 30, toColor([100, 255, 100]), { startMs: 4000 }),
+  new Shape(230, 500, 60, 30, toColor([100, 255, 100]), { endMs: 4000 }),
+  new Shape(600, 60, 640, 100, toColor([0, 255, 255])),
+  new Text(
+    604,
+    54,
+    400,
+    100,
+    "Hello, World!",
+    100,
+    toColor("#0cc"),
+    toColor("#000", 0)
+  ),
+  new Text(
+    600,
+    50,
+    400,
+    100,
+    "Hello, World!",
+    100,
+    toColor("#fff"),
+    toColor("#000", 0)
+  ),
 ];
-
 interface Props {
   maxSize: {
     width: number;
@@ -121,19 +136,15 @@ export const MoviePreview = ({ maxSize }: Props) => {
       objects.push(
         new MIDI(
           midi,
-          "sep8",
+          "sep4",
           (1280 - 720 * 0.8) / 2,
           720 * 0.1,
           720 * 0.8,
           720 * 0.8,
-          "#eee",
-          new Shape(0, 0, 0, 10, "#5BE8FD"),
-          {
-            alpha: 0,
-          }
+          toColor("#eee", 0),
+          new Shape(0, 0, 0, 10, toColor("#5BE8FD"))
         )
       );
-      p5.print("midi");
 
       bpm = midi.header.tempos[0].bpm;
       setMidi(null);
