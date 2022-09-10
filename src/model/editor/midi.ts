@@ -49,7 +49,11 @@ class MIDI extends BasicObject {
     } else {
       this.background = background;
     }
-    this.alpha = option?.alpha || 100; // FIXME alpha = 0のとき
+    if (typeof option?.alpha == "number") {
+      this.alpha = option?.alpha;
+    } else {
+      this.alpha = 100;
+    }
     this.radius = option?.radius;
     this.border = option?.border;
   }
