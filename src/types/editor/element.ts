@@ -1,11 +1,11 @@
 interface Color {
-  rgb: string;
+  rgb: [number, number, number];
   alpha: string;
 }
 
 interface Border {
   size: number;
-  color: string;
+  color: Color;
 }
 
 interface Position {
@@ -23,13 +23,13 @@ interface Radius {
 interface BaseElement {
   type: string;
   name: string;
+  position: Position;
   width: number;
   height: number;
   background: Color;
-  border: Border;
-  startMS: number;
-  endMs: number;
-  position: Position;
+  border?: Border;
+  startMS?: number;
+  endMs?: number;
 }
 
 interface Shape extends BaseElement {
@@ -39,12 +39,16 @@ interface Shape extends BaseElement {
 
 interface Midi extends BaseElement {
   type: "MIDI";
+  animation: "sep4" | "sep4" | "sep8" | "scroll";
   shape: Shape;
 }
 
 interface Text extends BaseElement {
   type: "TEXT";
   text: string;
+  color: Color;
+  size: number;
+  font?: string;
 }
 
 export type Element = Shape | Midi | Text;

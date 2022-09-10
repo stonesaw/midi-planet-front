@@ -23,12 +23,10 @@ let fps = 0;
 
 // midi
 let bpm = 0;
-let beats: [number, number] = [0, 0];
 
 // TODO: use Context
 
 const objects: (Shape | Text | MIDI)[] = [
-  new Shape(640, 360, 100, 50, "#123456"),
   new Shape(100, 200, 100, 50, "#eee", {
     radius: [10, 20, 10, 20],
     border: { size: 1, color: "#000" },
@@ -64,7 +62,7 @@ interface Props {
 }
 
 export const MoviePreview = ({ maxSize }: Props) => {
-  const { midi, audioState } = useEditor();
+  const { midi, setMidi, audioState } = useEditor();
 
   const [timer, setTimer] = useState<number>(0); // 再生時間 (ミリ秒)
   const [beatCounter, setBeatCounter] = useState<number>(0); // 拍子のカウント
@@ -104,9 +102,7 @@ export const MoviePreview = ({ maxSize }: Props) => {
 
     if (audioState === "play") {
       setTimer(currentTime - startTime);
-      if (midi) {
-        setBeatCounter(Math.floor((timer / 1000) * (bpm / 60)));
-      }
+      setBeatCounter(Math.floor((timer / 1000) * (bpm / 60)));
     }
 
     // draw background
@@ -114,7 +110,7 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.rect(0, 0, p5.width, p5.height);
 
     // draw objects
-    objects.forEach((obj) => obj.draw(p5, currentTime));
+    objects.forEach((obj) => obj.draw(p5, currentTime, beatCounter));
 
     p5.textSize(16);
     p5.fill(50);
@@ -125,24 +121,21 @@ export const MoviePreview = ({ maxSize }: Props) => {
       objects.push(
         new MIDI(
           midi,
-          100,
-          100,
-          520,
-          520,
+          "sep8",
+          (1280 - 720 * 0.8) / 2,
+          720 * 0.1,
+          720 * 0.8,
+          720 * 0.8,
           "#eee",
-          new Shape(0, 0, 40, 10, "#5BE8FD")
+          new Shape(0, 0, 0, 10, "#5BE8FD"),
+          {
+            alpha: 0,
+          }
         )
       );
       p5.print("midi");
 
       bpm = midi.header.tempos[0].bpm;
-      beats = [
-        midi.header.timeSignatures[0].timeSignature[0],
-        midi.header.timeSignatures[0].timeSignature[1],
-      ];
-      // ppq = midi.header.ppq;
-      // notes = midi.tracks[0].notes;
-
       setMidi(null);
     }
 
@@ -155,13 +148,8 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.text(`a: ${audioState}`, 0, 150);
     p5.text(`played: ${audioState === "play"}`, 0, 48);
     p5.text(`timer: ${floorAt(timer / 1000, 0.01)}`, 0, 64);
-    p5.text(
-      `beat: ${beatCounter} ${
-        midi ? "!".repeat((beatCounter % 4) + 1) : " (please import midi)"
-      }`,
-      0,
-      80
-    );
+    p5.text(`beat: ${beatCounter} ${"!".repeat((beatCounter % 4) + 1)}`, 0, 80);
+    p5.text(`bpm: ${bpm}`, 200, 32);
   };
 
   const windowResized = (p5: p5Types) => {
