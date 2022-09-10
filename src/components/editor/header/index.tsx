@@ -1,8 +1,21 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, FormLabel, Input, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormLabel,
+  HStack,
+  IconButton,
+  Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  StackDivider,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 
-import PlayButton from "@/components/editor/header/playButton";
+import AudioControl from "@/components/editor/header/audioControl";
 import { loadMidi } from "@/libs/midi";
 import { useEditor } from "@/providers/editor";
 
@@ -33,14 +46,17 @@ export const HeaderEditor = () => {
     }
   }, [audioState]);
 
+  const FORM_INPUT_IDS = {
+    AUDIO: "input-audio",
+    MIDI: "input-midi",
+  };
+
   return (
     <Box as="header" bgColor="white">
-      <Flex
+      <HStack
         as="nav"
         align="stretch"
         justify="space-between"
-        maxW="6xl"
-        mx="auto"
         p={4}
         flexDir={{
           base: "column",
@@ -48,36 +64,77 @@ export const HeaderEditor = () => {
         }}
         gap={4}
       >
-        <Input
-          type="file"
-          id="input-midi"
-          accept="audio/midi"
-          onChange={handleUploadMidi}
-          display="none"
-          ref={refMidiInput}
-        />
-        <FormLabel htmlFor="input-midi">
-          <Button
-            leftIcon={<AddIcon />}
-            color="brand.500"
-            onClick={() => refMidiInput?.current?.click()}
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label="Import Something"
+            colorScheme="brand"
+            icon={<AddIcon />}
+            variant="outline"
+          />
+          <MenuList>
+            <MenuItem>
+              <FormLabel
+                cursor="pointer"
+                htmlFor={FORM_INPUT_IDS.AUDIO}
+                m={0}
+                w="100%"
+              >
+                Import Audio
+              </FormLabel>
+            </MenuItem>
+            <MenuItem>
+              <FormLabel
+                cursor="pointer"
+                htmlFor={FORM_INPUT_IDS.MIDI}
+                m={0}
+                w="100%"
+              >
+                Import MIDI
+              </FormLabel>
+            </MenuItem>
+          </MenuList>
+        </Menu>
+        <HStack gap={4}>
+          <HStack
+            px={4}
+            py={2}
+            bgColor="gray.100"
+            borderRadius="md"
+            divider={<StackDivider borderColor="gray.300" />}
           >
-            Import MIDI
-          </Button>
-        </FormLabel>
-        <Input
-          type="file"
-          id="input-audio"
-          accept="audio/*"
-          onChange={handleUploadAudio}
-          display="none"
-        />
-        <FormLabel htmlFor="input-audio">
-          <Link color="brand.500">Import Audio</Link>
-        </FormLabel>
-        <audio src={audioSrc || ""} ref={refAudio}></audio>
-        <PlayButton />
-      </Flex>
+            <Text>BPM: 168</Text>
+            <Text>4/4</Text>
+          </HStack>
+          <AudioControl />
+          <Input
+            type="file"
+            id={FORM_INPUT_IDS.MIDI}
+            accept="audio/midi"
+            onChange={handleUploadMidi}
+            display="none"
+          />
+          <Input
+            type="file"
+            id={FORM_INPUT_IDS.AUDIO}
+            accept="audio/*"
+            onChange={handleUploadAudio}
+            display="none"
+          />
+          <audio src={audioSrc || ""} ref={refAudio}></audio>
+          <HStack
+            px={4}
+            py={2}
+            bgColor="gray.100"
+            borderRadius="md"
+            divider={<StackDivider borderColor="gray.300" />}
+          >
+            <Text>1/3</Text>
+            <Text>00:03.1</Text>
+          </HStack>
+        </HStack>
+        <Button colorScheme="brand">Save</Button>
+      </HStack>
     </Box>
   );
 };
