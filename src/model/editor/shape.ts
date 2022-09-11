@@ -10,6 +10,7 @@ class Shape extends BaseElement implements IShape {
   border?: Border;
 
   constructor(
+    id: number,
     x: number,
     y: number,
     width: number,
@@ -23,6 +24,7 @@ class Shape extends BaseElement implements IShape {
     }
   ) {
     super(
+      id,
       "Shape",
       x,
       y,

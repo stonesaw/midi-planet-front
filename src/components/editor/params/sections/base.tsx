@@ -3,6 +3,7 @@ import {
   Heading,
   HStack,
   NumberInput,
+  NumberInputField,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -40,10 +41,11 @@ export const BaseRow = ({ paramName, paramValue, onChange }: BaseRowProps) => (
     </Text>
     <NumberInput
       color="gray.50"
-      value={paramValue}
+      defaultValue={paramValue}
+      min={0}
       onChange={(value) => onChange(Number(value))}
     >
-      {paramValue}
+      <NumberInputField borderColor="gray.500" />
     </NumberInput>
   </HStack>
 );

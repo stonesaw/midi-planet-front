@@ -2,8 +2,12 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 
 import { BaseRow, BaseSection } from "@/components/editor/params/sections/base";
+import { useEditor } from "@/providers/editor";
 
 export const AppearanceParamsEditor = () => {
+  const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
+    useEditor();
+
   return (
     <BaseSection title="Shape">
       <VStack align="flex-end">
@@ -13,15 +17,23 @@ export const AppearanceParamsEditor = () => {
               <Td p={2}>
                 <BaseRow
                   paramName="X"
-                  paramValue={100}
-                  onChange={() => console.log("X")}
+                  paramValue={singleTimeLine[selectedElementIndex].x}
+                  onChange={(value) => {
+                    const newTimeLine = [...singleTimeLine];
+                    newTimeLine[selectedElementIndex].x = value;
+                    setSingleTimeLine(newTimeLine);
+                  }}
                 />
               </Td>
               <Td p={2}>
                 <BaseRow
                   paramName="Y"
-                  paramValue={200}
-                  onChange={() => console.log("Y")}
+                  paramValue={singleTimeLine[selectedElementIndex].y}
+                  onChange={(value) => {
+                    const newTimeLine = [...singleTimeLine];
+                    newTimeLine[selectedElementIndex].y = value;
+                    setSingleTimeLine(newTimeLine);
+                  }}
                 />
               </Td>
             </Tr>
@@ -29,15 +41,23 @@ export const AppearanceParamsEditor = () => {
               <Td p={2}>
                 <BaseRow
                   paramName="W"
-                  paramValue={300}
-                  onChange={() => console.log("W")}
+                  paramValue={singleTimeLine[selectedElementIndex].width}
+                  onChange={(value) => {
+                    const newTimeLine = [...singleTimeLine];
+                    newTimeLine[selectedElementIndex].width = value;
+                    setSingleTimeLine(newTimeLine);
+                  }}
                 />
               </Td>
               <Td p={2}>
                 <BaseRow
                   paramName="H"
-                  paramValue={400}
-                  onChange={() => console.log("H")}
+                  paramValue={singleTimeLine[selectedElementIndex].height}
+                  onChange={(value) => {
+                    const newTimeLine = [...singleTimeLine];
+                    newTimeLine[selectedElementIndex].height = value;
+                    setSingleTimeLine(newTimeLine);
+                  }}
                 />
               </Td>
             </Tr>

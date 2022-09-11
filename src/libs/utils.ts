@@ -61,8 +61,17 @@ export function hex2rgb(hex: string): [number, number, number] {
       parseInt(result[3], 16),
     ];
   } else {
-    throw new Error("failed convert. (hex to rgb)");
+    throw new Error(`failed convert. value: ${hex}`);
   }
+}
+
+function componentToHex(c: number) {
+  const hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+export function rgb2hex(r: number, g: number, b: number) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 export function toColor(

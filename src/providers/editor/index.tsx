@@ -1,6 +1,11 @@
 import { MidiJSON } from "@tonejs/midi";
 import { createContext, ReactNode, useContext, useState } from "react";
 
+import { theme } from "@/libs/theme";
+import { toColor } from "@/libs/utils";
+import Shape from "@/model/editor/shape";
+import { Element } from "@/types/editor/element";
+
 type AudioState = "play" | "pause" | "init";
 interface ContextProps {
   audioState: AudioState;
@@ -9,6 +14,10 @@ interface ContextProps {
   setAudioSrc: (src: string) => void;
   midi: MidiJSON | null;
   setMidi: (midi: MidiJSON | null) => void;
+  singleTimeLine: Element[];
+  setSingleTimeLine: (singleTimeLine: Element[]) => void;
+  selectedElementIndex: number; // FIXME
+  setSelectedElementIndex: (selectedElementIndex: number) => void;
 }
 
 const EditorContext = createContext<ContextProps>({
@@ -18,6 +27,10 @@ const EditorContext = createContext<ContextProps>({
   setAudioSrc: () => undefined,
   midi: null,
   setMidi: () => undefined,
+  singleTimeLine: [],
+  setSingleTimeLine: () => undefined,
+  selectedElementIndex: 0,
+  setSelectedElementIndex: () => undefined,
 });
 
 interface Props {
@@ -30,6 +43,10 @@ export const EditorProvider = ({ children }: Props) => {
   );
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [midi, setMidi] = useState<MidiJSON | null>(null);
+  const [singleTimeLine, setSingleTimeLine] = useState<Element[]>([
+    new Shape(0, 100, 100, 200, 100, toColor(theme.colors["brand"][100])),
+  ]);
+  const [selectedElementIndex, setSelectedElementIndex] = useState<number>(0);
 
   return (
     <EditorContext.Provider
@@ -40,6 +57,10 @@ export const EditorProvider = ({ children }: Props) => {
         setAudioSrc,
         midi,
         setMidi,
+        singleTimeLine,
+        setSingleTimeLine,
+        selectedElementIndex,
+        setSelectedElementIndex,
       }}
     >
       {children}

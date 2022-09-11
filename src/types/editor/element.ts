@@ -1,3 +1,5 @@
+import p5Types from "p5";
+
 export interface Color {
   rgb: [number, number, number]; // 0-255
   alpha: number; // 0 to 255
@@ -16,6 +18,7 @@ export interface Radius {
 }
 
 export interface IBaseElement {
+  id: number;
   type?: string;
   name: string;
   x: number;
@@ -25,6 +28,7 @@ export interface IBaseElement {
   background: Color;
   startMs?: number;
   endMs?: number;
+  draw(p5: p5Types, currentTimeMs: number, currentBeat: number): void;
 }
 
 export interface IShape extends IBaseElement {
