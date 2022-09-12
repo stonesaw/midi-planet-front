@@ -14,6 +14,7 @@ class Text extends BaseElement implements IText {
   border?: Border;
 
   constructor(
+    id: number,
     x: number,
     y: number,
     width: number,
@@ -30,7 +31,7 @@ class Text extends BaseElement implements IText {
       radius?: Radius;
     }
   ) {
-    super("Shape", x, y, width, height, background, startMs, endMs);
+    super(id, "Shape", x, y, width, height, background, startMs, endMs);
     this.text = text;
     this.size = size;
     this.color = color;
