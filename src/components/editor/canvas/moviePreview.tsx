@@ -80,10 +80,6 @@ export const MoviePreview = ({ maxSize }: Props) => {
     // draw objects
     singleTimeLine.forEach((elm) => elm.draw(p5, currentTime, beatCounter));
 
-    p5.textSize(16);
-    p5.fill(50);
-    p5.text("hello", 200, 100, 100, 100);
-
     // draw midi
     if (midi) {
       // TODO: define Provider

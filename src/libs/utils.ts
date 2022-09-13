@@ -76,7 +76,7 @@ export function rgb2hex(r: number, g: number, b: number) {
 
 export function toColor(
   color: string | [number, number, number],
-  alpha = 255
+  alpha = 100
 ): Color {
   return {
     rgb: typeof color == "string" ? hex2rgb(color) : color,

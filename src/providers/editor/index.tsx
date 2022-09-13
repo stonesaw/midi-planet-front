@@ -44,7 +44,15 @@ export const EditorProvider = ({ children }: Props) => {
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [midi, setMidi] = useState<MidiJSON | null>(null);
   const [singleTimeLine, setSingleTimeLine] = useState<Element[]>([
-    new Shape(0, 100, 100, 200, 100, toColor(theme.colors["brand"][100])),
+    new Shape(
+      0,
+      "図形だよ～",
+      100,
+      100,
+      200,
+      100,
+      toColor(theme.colors["brand"][100])
+    ),
   ]);
   const [selectedElementIndex, setSelectedElementIndex] = useState<number>(0);
 

@@ -22,6 +22,7 @@ class MIDI extends BaseElement implements IMidi {
 
   constructor(
     id: number,
+    name: string,
     midi: MidiJSON,
     animation: "sep2" | "sep4" | "sep8" | "scroll",
     x: number,
@@ -39,7 +40,7 @@ class MIDI extends BaseElement implements IMidi {
   ) {
     super(
       id,
-      "MIDI",
+      name,
       x,
       y,
       width,
@@ -48,6 +49,7 @@ class MIDI extends BaseElement implements IMidi {
       option?.startMs,
       option?.endMs
     );
+    this.type = "MIDI";
     this.midi = midi;
     this.animation = animation;
     this.shape = shape;
@@ -67,7 +69,7 @@ class MIDI extends BaseElement implements IMidi {
       p5.noStroke();
     }
 
-    p5.fill(p5.color(...this.background.rgb, this.background.alpha));
+    p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),
@@ -82,14 +84,17 @@ class MIDI extends BaseElement implements IMidi {
 
     if (this.shape.border) {
       p5.stroke(
-        p5.color(...this.shape.border.color.rgb, this.shape.border.color.alpha)
+        p5.color(
+          ...this.shape.border.color.rgb,
+          this.shape.border.color.alpha * 2.55
+        )
       );
     } else {
       p5.noStroke();
     }
 
     p5.fill(
-      p5.color(...this.shape.background.rgb, this.shape.background.alpha)
+      p5.color(...this.shape.background.rgb, this.shape.background.alpha * 2.55)
     );
     for (let i = 0; i < notes.length; i++) {
       const note: NoteJSON = notes[i];

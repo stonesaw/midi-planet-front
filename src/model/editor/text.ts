@@ -15,6 +15,7 @@ class Text extends BaseElement implements IText {
 
   constructor(
     id: number,
+    name: string,
     x: number,
     y: number,
     width: number,
@@ -31,7 +32,8 @@ class Text extends BaseElement implements IText {
       radius?: Radius;
     }
   ) {
-    super(id, "Shape", x, y, width, height, background, startMs, endMs);
+    super(id, name, x, y, width, height, background, startMs, endMs);
+    this.type = "TEXT";
     this.text = text;
     this.size = size;
     this.color = color;
@@ -47,12 +49,12 @@ class Text extends BaseElement implements IText {
 
     // draw background
     if (this.border) {
-      p5.stroke(p5.color(...this.background.rgb, this.background.alpha));
+      p5.stroke(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     } else {
       p5.noStroke();
     }
 
-    p5.fill(p5.color(...this.background.rgb, this.background.alpha));
+    p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),
@@ -61,7 +63,7 @@ class Text extends BaseElement implements IText {
       ...(this.radius ? Object.values(this.radius) : [0])
     );
 
-    p5.fill(p5.color(...this.color.rgb, this.color.alpha));
+    p5.fill(p5.color(...this.color.rgb, this.color.alpha * 2.55));
     p5.textSize(this.toRealY(p5, this.size));
     p5.text(
       this.text,

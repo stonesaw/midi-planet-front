@@ -45,7 +45,7 @@ export const BaseRow = ({ paramName, paramValue, onChange }: BaseRowProps) => (
       min={0}
       onChange={(value) => onChange(Number(value))}
     >
-      <NumberInputField borderColor="gray.500" />
+      <NumberInputField borderColor="gray.500" pl={2} pr={2} />
     </NumberInput>
   </HStack>
 );

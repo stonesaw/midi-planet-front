@@ -11,6 +11,7 @@ class Shape extends BaseElement implements IShape {
 
   constructor(
     id: number,
+    name: string,
     x: number,
     y: number,
     width: number,
@@ -25,7 +26,7 @@ class Shape extends BaseElement implements IShape {
   ) {
     super(
       id,
-      "Shape",
+      name,
       x,
       y,
       width,
@@ -34,6 +35,7 @@ class Shape extends BaseElement implements IShape {
       option?.startMs,
       option?.endMs
     );
+    this.type = "SHAPE";
     this.radius = option?.radius;
     this.border = option?.border;
   }
@@ -44,13 +46,15 @@ class Shape extends BaseElement implements IShape {
     }
 
     if (this.border) {
-      p5.stroke(p5.color(...this.border.color.rgb, this.border.color.alpha));
+      p5.stroke(
+        p5.color(...this.border.color.rgb, this.border.color.alpha * 2.55)
+      );
       p5.strokeWeight(this.toRealX(p5, this.border.size));
     } else {
       p5.noStroke();
     }
 
-    p5.fill(p5.color(...this.background.rgb, this.background.alpha));
+    p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),

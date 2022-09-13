@@ -1,7 +1,7 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseRow, BaseSection } from "@/components/editor/params/sections/base";
+import { BaseSection } from "@/components/editor/params/sections/base";
 import { InputColor } from "@/components/editor/params/sections/inputColor";
 import { useEditor } from "@/providers/editor";
 
@@ -15,26 +15,12 @@ export const ColorParamsEditor = () => {
         <Table variant="unstyled">
           <Tbody>
             <Tr>
-              <Td p={3}>
+              <Td p={2}>
                 <InputColor
-                  paramValue={singleTimeLine[selectedElementIndex].background}
+                  paramColor={singleTimeLine[selectedElementIndex].background}
                   onChange={(color) => {
                     const newTimeLine = [...singleTimeLine];
                     newTimeLine[selectedElementIndex].background = color;
-                    setSingleTimeLine(newTimeLine);
-                  }}
-                />
-              </Td>
-              <Td p={1}>
-                {/* TODO: alpha input */}
-                <BaseRow
-                  paramName="a"
-                  paramValue={
-                    singleTimeLine[selectedElementIndex].background.alpha
-                  }
-                  onChange={(value) => {
-                    const newTimeLine = [...singleTimeLine];
-                    newTimeLine[selectedElementIndex].background.alpha = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />

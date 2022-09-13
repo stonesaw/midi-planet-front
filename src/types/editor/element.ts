@@ -2,7 +2,7 @@ import p5Types from "p5";
 
 export interface Color {
   rgb: [number, number, number]; // 0-255
-  alpha: number; // 0 to 255
+  alpha: number; // 0 to 100
 }
 
 export interface Border {
