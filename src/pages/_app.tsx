@@ -1,4 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -11,11 +12,13 @@ import { CustomPageProps, NextPageWithLayout } from "@/types/page";
 
 interface CustomAppProps extends AppProps {
   Component: NextPageWithLayout;
-  pageProps: CustomPageProps;
+  pageProps: CustomPageProps & {
+    session: Session;
+  };
 }
 
 function MyApp({ Component, pageProps }: CustomAppProps) {
-  const { session, title, description, keywords, isIndex, ...otherPageProps } =
+  const { title, description, keywords, isIndex, session, ...otherPageProps } =
     pageProps;
 
   const getLayout = Component.getLayout || ((page) => page);
