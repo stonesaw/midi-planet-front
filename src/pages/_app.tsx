@@ -8,6 +8,8 @@ import Meta from "@/components/meta";
 import { theme } from "@/libs/theme";
 import { CustomPageProps, NextPageWithLayout } from "@/types/page";
 
+import "../styles/global.css";
+
 interface CustomAppProps extends AppProps {
   Component: NextPageWithLayout;
   pageProps: CustomPageProps;
