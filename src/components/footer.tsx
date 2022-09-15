@@ -7,7 +7,9 @@ import {
   Grid,
   GridItem,
   Flex,
+  HStack,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import NextLink from "next/link";
 
 import { Title } from "@/components/title";
@@ -33,12 +35,25 @@ const Footer = () => {
         <GridItem colSpan={2}>
           <Flex flexDir="column" align="center" justify="center" height="100%">
             <Title />
-            <Text fontSize="lg" color="gray.500">
+            <Text fontSize="sm" color="gray.400" textAlign="center">
               Powered by
             </Text>
-            <Text fontSize="lg" color="gray.500">
-              Serpent
-            </Text>
+            <HStack>
+              <Image
+                src="/serpent.png"
+                alt="Serpent Logo"
+                width={32}
+                height={32}
+              />
+              <Text
+                fontSize="md"
+                fontWeight="bold"
+                color="gray.600"
+                textAlign="center"
+              >
+                Serpent
+              </Text>
+            </HStack>
           </Flex>
         </GridItem>
 

@@ -1,4 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { SessionProvider } from "next-auth/react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -14,7 +15,7 @@ interface CustomAppProps extends AppProps {
 }
 
 function MyApp({ Component, pageProps }: CustomAppProps) {
-  const { title, description, keywords, isIndex, ...otherPageProps } =
+  const { session, title, description, keywords, isIndex, ...otherPageProps } =
     pageProps;
 
   const getLayout = Component.getLayout || ((page) => page);
@@ -27,11 +28,13 @@ function MyApp({ Component, pageProps }: CustomAppProps) {
         keywords={keywords}
         isIndex={isIndex}
       />
-      <ChakraProvider theme={theme}>
-        <DndProvider backend={HTML5Backend}>
-          {getLayout(<Component {...otherPageProps} />)}
-        </DndProvider>
-      </ChakraProvider>
+      <SessionProvider session={session}>
+        <ChakraProvider theme={theme}>
+          <DndProvider backend={HTML5Backend}>
+            {getLayout(<Component {...otherPageProps} />)}
+          </DndProvider>
+        </ChakraProvider>
+      </SessionProvider>
     </>
   );
 }
