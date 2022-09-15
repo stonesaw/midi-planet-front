@@ -6,6 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     session({ session, user }) {
       if (session.user) session.user.id = user.id;
