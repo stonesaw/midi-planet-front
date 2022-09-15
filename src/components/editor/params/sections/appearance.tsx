@@ -9,7 +9,7 @@ export const AppearanceParamsEditor = () => {
     useEditor();
 
   return (
-    <BaseSection title="Shape">
+    <BaseSection>
       <VStack align="flex-end">
         <Table variant="unstyled">
           <Tbody>
