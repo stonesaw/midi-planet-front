@@ -23,7 +23,7 @@ const NavItems = () => {
         </Button>
       </NextLink>
 
-      <NextLink href="/home" passHref>
+      <NextLink href="/login" passHref>
         <Link
           _hover={{ bg: "brand.500" }}
           backgroundColor="brand.400"

@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 
+import { Title } from "@/components/title";
+
 const Footer = () => {
   return (
     <Box as="header" bgColor="white">
@@ -30,14 +32,7 @@ const Footer = () => {
       >
         <GridItem colSpan={2}>
           <Flex flexDir="column" align="center" justify="center" height="100%">
-            <Heading
-              as="h1"
-              size="lg"
-              letterSpacing={"tighter"}
-              color="brand.400"
-            >
-              MIDI Video
-            </Heading>
+            <Title />
             <Text fontSize="lg" color="gray.500">
               Powered by
             </Text>
