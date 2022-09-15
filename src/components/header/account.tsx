@@ -13,11 +13,9 @@ import {
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import NextLink from "next/link";
-import { useRouter } from "next/router";
 
 export const HeaderAccount = () => {
   const session = useSession();
-  const router = useRouter();
 
   if (session.status === "loading") return null;
 
