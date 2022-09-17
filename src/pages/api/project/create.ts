@@ -12,6 +12,8 @@ import {
 
 const schema = z.object({
   title: z.string(),
+  source: z.string().optional(),
+  audioUrl: z.string().optional(),
 });
 
 export type IProjectCreateInput = z.infer<typeof schema>;
@@ -33,7 +35,13 @@ export default async function handler(
   const project = await prisma.project.create({
     data: {
       title: input.data.title,
-      ownerId: session.user.id,
+      owner: {
+        connect: {
+          id: session.user.id,
+        },
+      },
+      source: input.data.source,
+      audioUrl: input.data.audioUrl,
     },
   });
 
