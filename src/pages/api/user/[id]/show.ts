@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Project, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { BASE_URL } from "@/constants/site";
@@ -7,12 +7,19 @@ import {
   responseException,
   responseSuccess,
 } from "@/server/response/exception";
+import { DateToString } from "@/types/utils/date";
 
-export type IUserShowResponse = User;
+export type IUserShowOutput = User & {
+  projects: DateToString<
+    Project & {
+      owner: User;
+    }
+  >[];
+};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<IUserShowResponse>
+  res: NextApiResponse<IUserShowOutput>
 ) {
   if (req.method !== "GET") return responseException(res, 405);
   const userId = req.query.id as string;
@@ -20,16 +27,31 @@ export default async function handler(
     where: {
       id: userId,
     },
+    include: {
+      projects: {
+        include: {
+          owner: true,
+        },
+      },
+    },
   });
 
   if (!user) return responseException(res, 404);
 
-  responseSuccess(res, user);
+  const formattedUser: IUserShowOutput = {
+    ...user,
+    projects: user.projects.map((project) => ({
+      ...project,
+      createdAt: project.createdAt.toISOString(),
+      updatedAt: project.updatedAt.toISOString(),
+    })),
+  };
+  responseSuccess(res, formattedUser);
 }
 
 export const fetchUserById = async (id: string) => {
   const res = await fetch(`${BASE_URL}/api/user/${id}/show`);
   if (!res.ok) return null;
-  const data: IUserShowResponse = await res.json();
+  const data: IUserShowOutput = await res.json();
   return data;
 };

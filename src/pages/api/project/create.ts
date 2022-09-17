@@ -10,13 +10,11 @@ import {
   responseSuccess,
 } from "@/server/response/exception";
 
-const schema = z.object({
-  title: z.string(),
-  source: z.string().optional(),
-  audioUrl: z.string().optional(),
+const createProjectSchema = z.object({
+  title: z.string().min(1).max(50),
 });
 
-export type IProjectCreateInput = z.infer<typeof schema>;
+export type IProjectCreateInput = z.infer<typeof createProjectSchema>;
 export type IProjectCreateOutput = Project;
 
 export default async function handler(
@@ -25,7 +23,7 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return responseException(res, 400);
 
-  const input = schema.safeParse(req.body);
+  const input = createProjectSchema.safeParse(req.body);
   if (!input.success) return responseException(res, 400);
 
   const session = await unstable_getServerSession(req, res, authOptions);
@@ -40,8 +38,6 @@ export default async function handler(
           id: session.user.id,
         },
       },
-      source: input.data.source,
-      audioUrl: input.data.audioUrl,
     },
   });
 

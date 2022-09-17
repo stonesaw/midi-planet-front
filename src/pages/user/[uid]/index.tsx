@@ -1,24 +1,38 @@
-import { VStack } from "@chakra-ui/react";
-import { User } from "@prisma/client";
-import { GetStaticPaths, GetStaticProps } from "next";
+import {
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  VStack,
+} from "@chakra-ui/react";
+import { Project, User } from "@prisma/client";
+import { GetServerSideProps } from "next";
 import { useState } from "react";
 import * as z from "zod";
 
-import { UserCard } from "@/components/card/user";
 import HeaderFooterLayout from "@/components/layouts/headerFooter";
-import { fetchUsers } from "@/pages/api/user";
+import { ProjectList } from "@/components/project/list";
+import { UserCard } from "@/components/user/card";
 import { fetchUserById } from "@/pages/api/user/[id]/show";
 import { CustomPageProps, NextPageWithLayout } from "@/types/page";
+import { DateToString } from "@/types/utils/date";
 
 const queryParamsSchema = z.object({
   uid: z.string(),
 });
 
 interface Props extends CustomPageProps {
-  user: User;
+  user: User & {
+    projects: DateToString<
+      Project & {
+        owner: User;
+      }
+    >[];
+  };
 }
 
-export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const params = queryParamsSchema.safeParse(ctx.params);
   if (!params.success) return { notFound: true };
   const { uid } = params.data;
@@ -27,30 +41,34 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
 
   return {
     props: {
-      title: "Home",
+      title: user.name + "のプロフィール",
       isIndex: true,
       user,
     },
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const users = await fetchUsers();
-  const paths = users
-    ? users.map((user) => ({
-        params: { uid: user.id },
-      }))
-    : [];
-
-  return { paths, fallback: false };
-};
-
 const UserProfilePage: NextPageWithLayout<Props> = ({ user }) => {
-  const [userProfile, setUserProfile] = useState<User>(user);
+  const { projects, ...userData } = user;
+  const [userProfile, setUserProfile] = useState<User>(userData);
+  const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
   return (
-    <VStack maxW="4xl" w="100%" mx="auto" my="6" alignItems="stretch">
+    <VStack maxW="5xl" w="100%" mx="auto" my="6" px="4" alignItems="stretch">
       <UserCard userProfile={userProfile} setUserProfile={setUserProfile} />
+      <Tabs
+        index={currentTabIndex}
+        onChange={(index) => setCurrentTabIndex(index)}
+      >
+        <TabList>
+          <Tab>Projects</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <ProjectList projects={projects} />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </VStack>
   );
 };

@@ -10,7 +10,7 @@ export const BaseCard = ({ children }: Props) => (
     overflow="hidden"
     bgColor="white"
     shadow="sm"
-    borderRadius="md"
+    borderRadius="lg"
     position="relative"
   >
     {children}

@@ -19,7 +19,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
-import { BaseCard } from "@/components/card/base";
+import { BaseCard } from "@/components/card";
 import { BASE_URL } from "@/constants/site";
 
 interface Props {
@@ -74,7 +74,6 @@ export const UserCard = ({ userProfile, setUserProfile }: Props) => {
         <Avatar
           w="32"
           h="32"
-          bgColor={image ? "transparent" : undefined}
           src={userProfile.image || undefined}
           name={name ?? undefined}
           alignItems="baseline"
@@ -97,7 +96,7 @@ export const UserCard = ({ userProfile, setUserProfile }: Props) => {
               color="gray.700"
               fontWeight="bold"
               letterSpacing="wide"
-              fontSize="3xl"
+              fontSize="2xl"
             >
               {name}
             </Heading>

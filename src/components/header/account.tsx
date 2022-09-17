@@ -48,7 +48,6 @@ export const HeaderAccount = () => {
           <Avatar
             w="8"
             h="8"
-            bgColor={session.data.user.image ? "transparent" : undefined}
             src={session.data.user.image}
             name={session.data.user.name}
             referrerPolicy="no-referrer"
