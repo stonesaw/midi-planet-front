@@ -92,6 +92,7 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.fill(p5.color("#000000"));
     p5.textSize(16);
     p5.noStroke();
+    p5.textFont();
     p5.text("passed: " + toMinutes(p5.millis()), 0, 16);
     p5.text(`FPS: ${floorAt(fps, 0.1)}`, 0, 32);
     p5.text(`a: ${audioState}`, 0, 150);
