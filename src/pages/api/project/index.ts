@@ -1,7 +1,6 @@
 import { Project, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { BASE_URL } from "@/constants/site";
 import { prisma } from "@/libs/prisma";
 import {
   responseException,
@@ -35,7 +34,9 @@ export default async function handler(
 }
 
 export const fetchProjects = async () => {
-  const res = await fetch(`${BASE_URL}/api/project`);
+  const res = await fetch(
+    `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/project`
+  );
   if (!res.ok) return null;
   const data: IProjectIndexOutput = await res.json();
   return data;
