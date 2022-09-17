@@ -17,18 +17,47 @@ import { useEffect, useRef } from "react";
 
 import AudioControl from "@/components/editor/header/audioControl";
 import { loadMidi } from "@/libs/midi";
+import { toColor } from "@/libs/utils";
+import MIDI from "@/model/editor/midi";
+import Shape from "@/model/editor/shape";
 import { useEditor } from "@/providers/editor";
 
 export const HeaderEditor = () => {
   const refMidiInput = useRef<HTMLInputElement>(null);
   const refAudio = useRef<HTMLAudioElement>(null);
-  const { audioState, setMidi, setAudioSrc, audioSrc } = useEditor();
+  const {
+    audioState,
+    setMidi,
+    setAudioSrc,
+    audioSrc,
+    singleTimeLine,
+    setSingleTimeLine,
+  } = useEditor();
 
   const handleUploadMidi = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) return;
     const file = e.target.files[0];
     const midi = await loadMidi(file);
-    if (typeof midi == "string") setMidi(JSON.parse(midi));
+    if (typeof midi == "string") {
+      setMidi(JSON.parse(midi));
+
+      const newSingleTimeLine = [...singleTimeLine];
+      newSingleTimeLine.push(
+        new MIDI(
+          0,
+          "MIDIだよ！",
+          JSON.parse(midi),
+          "sep4",
+          100,
+          100,
+          520,
+          520,
+          toColor("#fff"),
+          new Shape(1, "a", 0, 0, 0, 16, toColor("#5BE8FD"))
+        )
+      );
+      setSingleTimeLine(newSingleTimeLine);
+    }
   };
 
   const handleUploadAudio = (e: React.ChangeEvent<HTMLInputElement>) => {

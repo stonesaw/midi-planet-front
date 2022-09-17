@@ -38,7 +38,7 @@ const Editor: NextPageWithLayout = () => {
         maxW="100vw"
       >
         <HeaderEditor />
-        <Box p={4}>
+        <Box p={4} h="calc(100vh - 72px)">
           <Grid
             templateColumns="calc(100% - 316px) 300px"
             templateRows="calc(100% - 316px) 300px"

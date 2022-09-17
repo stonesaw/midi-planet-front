@@ -4,6 +4,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import { theme } from "@/libs/theme";
 import { toColor } from "@/libs/utils";
 import Shape from "@/model/editor/shape";
+import Text from "@/model/editor/text";
 import { Element } from "@/types/editor/element";
 
 type AudioState = "play" | "pause" | "init";
@@ -52,6 +53,18 @@ export const EditorProvider = ({ children }: Props) => {
       200,
       100,
       toColor(theme.colors["brand"][100])
+    ),
+    new Text(
+      1,
+      "文字だよ～",
+      150,
+      150,
+      100,
+      100,
+      "文字だよ～",
+      32,
+      toColor("#abc"),
+      toColor("#000")
     ),
   ]);
   const [selectedElementIndex, setSelectedElementIndex] = useState<number>(0);

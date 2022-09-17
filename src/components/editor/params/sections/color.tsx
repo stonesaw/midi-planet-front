@@ -1,8 +1,9 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseSection } from "@/components/editor/params/sections/base";
-import { InputColor } from "@/components/editor/params/sections/inputColor";
+import { BaseSection } from "./base";
+import { InputColor } from "./inputColor";
+
 import { useEditor } from "@/providers/editor";
 
 export const ColorParamsEditor = () => {

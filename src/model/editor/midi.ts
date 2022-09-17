@@ -40,6 +40,8 @@ class MIDI extends BaseElement implements IMIDI {
       return;
     }
 
+    p5.noStroke();
+
     // draw background
     p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
