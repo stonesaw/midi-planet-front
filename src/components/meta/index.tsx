@@ -15,7 +15,7 @@ const generateTitle = (title?: string) => {
   return SITE_TITLE;
 };
 
-// const DEFAULT_OG_IMAGE = `${SITE_URL}/midipra.png`;
+// const DEFAULT_OG_IMAGE = `${BASE_URL}/midipra.png`;
 
 export default function Meta({
   title,
