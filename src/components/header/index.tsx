@@ -1,16 +1,18 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { Box, Flex, Hide } from "@chakra-ui/react";
+import { Box, Flex, Hide, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
 import NavItems from "./navItems";
 
+import { CreateProjectModal } from "@/components/modals/createProject";
 import { Title } from "@/components/title";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isHeaderOpen, setIsHeaderOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleToggle = () => {
-    setIsOpen(!isOpen);
+    setIsHeaderOpen(!isHeaderOpen);
   };
 
   return (
@@ -46,13 +48,14 @@ const Header = () => {
           }}
           gap={4}
           display={{
-            base: isOpen ? "flex" : "none",
+            base: isHeaderOpen ? "flex" : "none",
             md: "flex",
           }}
         >
-          <NavItems />
+          <NavItems onModalOpen={onOpen} />
         </Flex>
       </Flex>
+      <CreateProjectModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

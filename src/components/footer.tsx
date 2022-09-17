@@ -1,23 +1,12 @@
-import {
-  Box,
-  Stack,
-  Heading,
-  Link,
-  Text,
-  Grid,
-  GridItem,
-  Flex,
-  HStack,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, HStack } from "@chakra-ui/react";
 import Image from "next/image";
-import NextLink from "next/link";
 
 import { Title } from "@/components/title";
 
 const Footer = () => {
   return (
     <Box as="header" bgColor="white">
-      <Grid
+      {/* <Grid
         as="nav"
         templateColumns={{
           base: "repeat(2, 1fr)",
@@ -31,33 +20,34 @@ const Footer = () => {
           base: "column",
           md: "row",
         }}
+      > */}
+      {/* <GridItem colSpan={2}> */}
+      <Flex
+        py="6"
+        flexDir="column"
+        align="center"
+        justify="center"
+        height="100%"
       >
-        <GridItem colSpan={2}>
-          <Flex flexDir="column" align="center" justify="center" height="100%">
-            <Title />
-            <Text fontSize="sm" color="gray.400" textAlign="center">
-              Powered by
-            </Text>
-            <HStack>
-              <Image
-                src="/serpent.png"
-                alt="Serpent Logo"
-                width={32}
-                height={32}
-              />
-              <Text
-                fontSize="md"
-                fontWeight="bold"
-                color="gray.600"
-                textAlign="center"
-              >
-                Serpent
-              </Text>
-            </HStack>
-          </Flex>
-        </GridItem>
+        <Title />
+        <Text fontSize="sm" color="gray.400" textAlign="center">
+          Powered by
+        </Text>
+        <HStack>
+          <Image src="/serpent.png" alt="Serpent Logo" width={32} height={32} />
+          <Text
+            fontSize="md"
+            fontWeight="bold"
+            color="gray.600"
+            textAlign="center"
+          >
+            Serpent
+          </Text>
+        </HStack>
+      </Flex>
+      {/* </GridItem> */}
 
-        <GridItem colSpan={1}>
+      {/* <GridItem colSpan={1}>
           <Stack mx="auto" w="fit-content">
             <Heading as="h2" size="lg" letterSpacing={"tighter"}>
               Meta
@@ -95,8 +85,8 @@ const Footer = () => {
               <Link fontSize="lg">Home</Link>
             </NextLink>
           </Stack>
-        </GridItem>
-      </Grid>
+        </GridItem> */}
+      {/* </Grid> */}
     </Box>
   );
 };

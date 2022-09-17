@@ -4,7 +4,11 @@ import NextLink from "next/link";
 
 import { HeaderAccount } from "@/components/header/account";
 
-const NavItems = () => (
+interface Props {
+  onModalOpen: () => void;
+}
+
+const NavItems = ({ onModalOpen }: Props) => (
   <>
     <NextLink href="/" passHref>
       <Button colorScheme="brand" variant="ghost">
@@ -16,11 +20,14 @@ const NavItems = () => (
         Find
       </Button>
     </NextLink>
-    <NextLink href="/editor" passHref>
-      <Button leftIcon={<AddIcon />} colorScheme="brand" variant="outline">
-        Create
-      </Button>
-    </NextLink>
+    <Button
+      leftIcon={<AddIcon />}
+      colorScheme="brand"
+      variant="outline"
+      onClick={onModalOpen}
+    >
+      Create
+    </Button>
     <HeaderAccount />
   </>
 );
