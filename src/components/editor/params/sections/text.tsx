@@ -1,7 +1,7 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseRowString, BaseSection } from "./base";
+import { BaseRow, BaseRowString, BaseSection } from "./base";
 import { InputColor } from "./inputColor";
 
 import { useEditor } from "@/providers/editor";
@@ -30,6 +30,23 @@ export const TextSection = () => {
                     if ("text" in a) {
                       a.text = value;
                     }
+                    setSingleTimeLine(newTimeLine);
+                  }}
+                />
+              </Td>
+            </Tr>
+            <Tr>
+              <Td p={2}>
+                {/* TODO: セレクトボックスにしたいかも
+                https://p5js.org/reference/#/p5/textFont
+                https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals#web_safe_fonts */}
+                <BaseRow
+                  paramName="S"
+                  paramValue={currentElm.size}
+                  onChange={(value) => {
+                    const newTimeLine = [...singleTimeLine];
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("size" in a) a.size = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />

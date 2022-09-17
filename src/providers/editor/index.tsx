@@ -54,7 +54,7 @@ export const EditorProvider = ({ children }: Props) => {
   const [singleTimeLine, setSingleTimeLine] = useState<Element[]>([
     new Shape(
       0,
-      "図形だよ～",
+      "図形 (0)",
       100,
       100,
       200,
@@ -68,8 +68,8 @@ export const EditorProvider = ({ children }: Props) => {
     const newSingleTimeLine = [...singleTimeLine];
     newSingleTimeLine.push(
       new MIDI(
-        0,
-        "MIDIだよ！",
+        singleTimeLine.length,
+        `MIDI (${singleTimeLine.length})`,
         midi,
         "sep4",
         100,
@@ -77,7 +77,15 @@ export const EditorProvider = ({ children }: Props) => {
         520,
         520,
         toColor("#fff", 0),
-        new Shape(1, "shape", 0, 0, 100, 16, toColor("#5BE8FD"))
+        new Shape(
+          singleTimeLine.length,
+          "shape",
+          0,
+          0,
+          100,
+          16,
+          toColor("#5BE8FD")
+        )
       )
     );
     setSingleTimeLine(newSingleTimeLine);
@@ -88,8 +96,8 @@ export const EditorProvider = ({ children }: Props) => {
     const newSingleTimeLine = [...singleTimeLine];
     newSingleTimeLine.push(
       new Shape(
-        0,
-        "図形だよ～",
+        singleTimeLine.length,
+        `図形 (${singleTimeLine.length})`,
         100,
         100,
         200,
@@ -105,16 +113,16 @@ export const EditorProvider = ({ children }: Props) => {
     const newSingleTimeLine = [...singleTimeLine];
     newSingleTimeLine.push(
       new Text(
-        1,
-        "文字だよ～",
+        singleTimeLine.length,
+        `テキスト (${singleTimeLine.length})`,
         150,
         150,
-        100,
-        100,
-        "文字だよ～",
+        200,
+        64,
+        "テキストを入力",
         32,
-        toColor("#abc"),
-        toColor("#000")
+        toColor("#000"),
+        toColor("#000", 0)
       )
     );
     setSingleTimeLine(newSingleTimeLine);

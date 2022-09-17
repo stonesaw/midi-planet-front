@@ -19,7 +19,7 @@ export const MIDIAppearanceSection = () => {
             <Tr>
               <Td p={2}>
                 <BaseRow
-                  paramName="ox"
+                  paramName="x"
                   paramValue={currentElm.shape.x}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
@@ -31,7 +31,7 @@ export const MIDIAppearanceSection = () => {
               </Td>
               <Td p={2}>
                 <BaseRow
-                  paramName="oy"
+                  paramName="y"
                   paramValue={currentElm.shape.y}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
@@ -45,7 +45,7 @@ export const MIDIAppearanceSection = () => {
             <Tr>
               <Td p={2}>
                 <BaseRow
-                  paramName="W"
+                  paramName="w"
                   paramValue={currentElm.shape.width}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
@@ -57,7 +57,7 @@ export const MIDIAppearanceSection = () => {
               </Td>
               <Td p={2}>
                 <BaseRow
-                  paramName="H"
+                  paramName="h"
                   paramValue={currentElm.shape.height}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
