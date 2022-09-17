@@ -10,7 +10,7 @@ import {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ProjectShowResponse>
+  res: NextApiResponse<IProjectShowResponse>
 ) {
   const session = await getSession();
   if (!session) return responseException(res, 401);
@@ -29,4 +29,4 @@ export default async function handler(
   responseSuccess(res, project);
 }
 
-export type ProjectShowResponse = Project;
+export type IProjectShowResponse = Project;

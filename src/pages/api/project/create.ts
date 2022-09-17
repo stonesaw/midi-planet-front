@@ -11,7 +11,7 @@ import {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ProjectCreateResponse>
+  res: NextApiResponse<IProjectCreateResponse>
 ) {
   if (req.method !== "POST") return responseException(res, 400);
 
@@ -37,4 +37,4 @@ const ProjectCreateInput = z.object({
 });
 
 export type IProjectCreateInput = z.infer<typeof ProjectCreateInput>;
-export type ProjectCreateResponse = Project;
+export type IProjectCreateResponse = Project;
