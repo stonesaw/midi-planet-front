@@ -19,6 +19,7 @@ export const theme = extendTheme({
     global: () => ({
       body: {
         bgColor: "gray.50",
+        fontFamily: "Note Sans",
       },
     }),
   },

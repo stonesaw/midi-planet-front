@@ -1,8 +1,10 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, Hide } from "@chakra-ui/react";
+import { Box, Flex, Hide } from "@chakra-ui/react";
 import { useState } from "react";
 
 import NavItems from "./navItems";
+
+import { Title } from "@/components/title";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,15 +29,7 @@ const Header = () => {
         gap={4}
       >
         <Flex align="center" justify="space-between">
-          <Heading
-            as="h1"
-            size="lg"
-            letterSpacing={"tighter"}
-            color="brand.400"
-          >
-            MIDI Video
-          </Heading>
-
+          <Title />
           <Hide above="md">
             <Box onClick={handleToggle}>
               <HamburgerIcon />

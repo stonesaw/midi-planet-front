@@ -44,8 +44,6 @@ class MIDI extends BaseElement implements IMIDI {
     this.midi = midi;
     this.animation = animation;
     this.shape = shape;
-    this.radius = option?.radius;
-    this.border = option?.border;
   }
 
   draw(p5: p5Types, currentTimeMs: number, currentBeat: number) {

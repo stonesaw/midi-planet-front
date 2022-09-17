@@ -39,7 +39,6 @@ export const MoviePreview = ({ maxSize }: Props) => {
     windowResized(p5);
     p5.print(p5.windowWidth);
     p5.print(p5.windowHeight);
-    p5.noStroke();
   };
 
   const draw = (p5: p5Types) => {
