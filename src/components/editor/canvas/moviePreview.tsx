@@ -2,10 +2,7 @@ import dynamic from "next/dynamic";
 import p5Types from "p5";
 import { useState } from "react";
 
-import { floorAt, toColor, toMinutes, toRadius } from "@/libs/utils";
-import MIDI from "@/model/editor/midi";
-import Shape from "@/model/editor/shape";
-import Text from "@/model/editor/text";
+import { floorAt, toMinutes } from "@/libs/utils";
 import { useEditor } from "@/providers/editor";
 
 const Sketch = dynamic(import("react-p5"), {
@@ -26,49 +23,6 @@ let bpm = 0;
 
 // TODO: use Context
 
-const objects: (Shape | Text | MIDI)[] = [
-  new Shape(100, 200, 100, 50, toColor("#abc"), {
-    radius: toRadius([10, 25, 10, 25]),
-    border: { size: 1, color: toColor("#000") },
-  }),
-  new Shape(100, 300, 100, 50, toColor([255, 100, 100], 120), {
-    radius: toRadius([10]),
-  }),
-  new Shape(130, 330, 100, 50, toColor([100, 255, 255], 120), {
-    radius: toRadius([10]),
-  }),
-  new Shape(130, 500, 60, 30, toColor([100, 255, 100]), {
-    startMs: 0,
-    endMs: 1000,
-  }),
-  new Shape(130, 500, 60, 30, toColor([100, 255, 100]), {
-    startMs: 2000,
-    endMs: 3000,
-  }),
-  new Shape(130, 500, 60, 30, toColor([100, 255, 100]), { startMs: 4000 }),
-  new Shape(230, 500, 60, 30, toColor([100, 255, 100]), { endMs: 4000 }),
-  new Shape(600, 60, 640, 100, toColor([0, 255, 255])),
-  new Text(
-    604,
-    54,
-    400,
-    100,
-    "Hello, World!",
-    100,
-    toColor("#0cc"),
-    toColor("#000", 0)
-  ),
-  new Text(
-    600,
-    50,
-    400,
-    100,
-    "Hello, World!",
-    100,
-    toColor("#fff"),
-    toColor("#000", 0)
-  ),
-];
 interface Props {
   maxSize: {
     width: number;
@@ -87,7 +41,6 @@ export const MoviePreview = ({ maxSize }: Props) => {
     windowResized(p5);
     p5.print(p5.windowWidth);
     p5.print(p5.windowHeight);
-    p5.noStroke();
   };
 
   const draw = (p5: p5Types) => {
@@ -125,7 +78,6 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.rect(0, 0, p5.width, p5.height);
 
     // draw objects
-    objects.forEach((obj) => obj.draw(p5, currentTime, beatCounter));
 
     p5.textSize(16);
     p5.fill(50);
@@ -133,19 +85,6 @@ export const MoviePreview = ({ maxSize }: Props) => {
 
     // draw midi
     if (midi) {
-      objects.push(
-        new MIDI(
-          midi,
-          "sep4",
-          (1280 - 720 * 0.8) / 2,
-          720 * 0.1,
-          720 * 0.8,
-          720 * 0.8,
-          toColor("#eee", 0),
-          new Shape(0, 0, 0, 10, toColor("#5BE8FD"))
-        )
-      );
-
       bpm = midi.header.tempos[0].bpm;
       setMidi(null);
     }
@@ -154,6 +93,7 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.fill(p5.color("#000000"));
     p5.textSize(16);
     p5.noStroke();
+    p5.textFont();
     p5.text("passed: " + toMinutes(p5.millis()), 0, 16);
     p5.text(`FPS: ${floorAt(fps, 0.1)}`, 0, 32);
     p5.text(`a: ${audioState}`, 0, 150);

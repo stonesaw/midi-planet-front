@@ -2,7 +2,13 @@ import p5Types from "p5";
 
 import { BaseElement } from "./baseElement";
 
-import { IShape, Border, Color, Radius } from "@/types/editor/element";
+import {
+  IShape,
+  Border,
+  Color,
+  Radius,
+  Duration,
+} from "@/types/editor/element";
 
 class Shape extends BaseElement implements IShape {
   type!: "SHAPE";
@@ -10,28 +16,19 @@ class Shape extends BaseElement implements IShape {
   border?: Border;
 
   constructor(
+    id: number,
     x: number,
     y: number,
     width: number,
     height: number,
     background: Color,
     option?: {
-      startMs?: number;
-      endMs?: number;
+      duration?: Duration;
       radius?: Radius;
       border?: Border;
     }
   ) {
-    super(
-      "Shape",
-      x,
-      y,
-      width,
-      height,
-      background,
-      option?.startMs,
-      option?.endMs
-    );
+    super(id, "Shape", x, y, width, height, background, option?.duration);
     this.radius = option?.radius;
     this.border = option?.border;
   }

@@ -1,41 +1,46 @@
 import p5Types from "p5";
 
-import { Color, IBaseElement } from "@/types/editor/element";
+import { Color, Duration, IBaseElement } from "@/types/editor/element";
 
 export class BaseElement implements IBaseElement {
+  id: number;
   name: string;
   x: number;
   y: number;
   width: number;
   height: number;
   background: Color;
-  startMs?: number;
-  endMs?: number;
+  duration?: Duration;
 
   constructor(
+    id: number,
     name: string,
     x: number,
     y: number,
     width: number,
     height: number,
     background: Color,
-    startMs?: number,
-    endMs?: number
+    duration?: Duration
   ) {
+    this.id = id;
     this.name = name;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.background = background;
-    this.startMs = startMs;
-    this.endMs = endMs;
+    this.duration = duration;
+  }
+
+  draw(_p5: p5Types, _currentTimeMs: number, _currentBeat: number): void {
+    throw new Error("Method not implemented.");
   }
 
   isDraw(currentTimeMs: number) {
     if (
-      currentTimeMs < (this.startMs || -Infinity) ||
-      (this.endMs || Infinity) < currentTimeMs
+      this.duration &&
+      (currentTimeMs < (this.duration.startMs || -Infinity) ||
+        (this.duration.endMs || Infinity) < currentTimeMs)
     ) {
       return false;
     }
