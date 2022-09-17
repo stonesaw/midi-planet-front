@@ -13,9 +13,11 @@ import {
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
 export const HeaderAccount = () => {
   const session = useSession();
+  const router = useRouter();
 
   if (session.status === "loading") return null;
 
@@ -46,17 +48,25 @@ export const HeaderAccount = () => {
           <Avatar
             w="8"
             h="8"
+            bgColor={session.data.user.image ? "transparent" : undefined}
             src={session.data.user.image}
             name={session.data.user.name}
+            referrerPolicy="no-referrer"
           />
           <TriangleDownIcon color="gray.500" />
         </HStack>
       </MenuButton>
       <Portal>
         <MenuList>
-          <MenuItem>Profile</MenuItem>
+          <MenuItem
+            onClick={() => router.push(`/user/${session.data.user?.id}`)}
+          >
+            Profile
+          </MenuItem>
           <MenuDivider />
-          <MenuItem onClick={() => signOut()}>Logout</MenuItem>
+          <MenuItem onClick={() => signOut().then(() => router.push("/"))}>
+            Logout
+          </MenuItem>
         </MenuList>
       </Portal>
     </Menu>

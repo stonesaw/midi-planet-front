@@ -1,6 +1,10 @@
+import { VStack } from "@chakra-ui/react";
+import { User } from "@prisma/client";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { useState } from "react";
 import * as z from "zod";
 
+import { UserCard } from "@/components/card/user";
 import HeaderFooterLayout from "@/components/layouts/headerFooter";
 import { fetchUsers } from "@/pages/api/user";
 import { fetchUserById } from "@/pages/api/user/[id]/show";
@@ -10,7 +14,11 @@ const queryParamsSchema = z.object({
   uid: z.string(),
 });
 
-export const getStaticProps: GetStaticProps<CustomPageProps> = async (ctx) => {
+interface Props extends CustomPageProps {
+  user: User;
+}
+
+export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   const params = queryParamsSchema.safeParse(ctx.params);
   if (!params.success) return { notFound: true };
   const { uid } = params.data;
@@ -37,8 +45,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false };
 };
 
-const UserProfilePage: NextPageWithLayout = () => {
-  return <div></div>;
+const UserProfilePage: NextPageWithLayout<Props> = ({ user }) => {
+  const [userProfile, setUserProfile] = useState<User>(user);
+
+  return (
+    <VStack maxW="4xl" w="100%" mx="auto" my="6" alignItems="stretch">
+      <UserCard userProfile={userProfile} setUserProfile={setUserProfile} />
+    </VStack>
+  );
 };
 
 UserProfilePage.getLayout = (page) => {

@@ -1,8 +1,9 @@
 import { Project } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
 
 import { prisma } from "@/libs/prisma";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import {
   responseException,
   responseSuccess,
@@ -10,9 +11,9 @@ import {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<IProjectShowResponse>
+  res: NextApiResponse<IProjectShowOutput>
 ) {
-  const session = await getSession();
+  const session = await unstable_getServerSession(req, res, authOptions);
   if (!session) return responseException(res, 401);
   if (!session.user) return responseException(res, 401);
 
@@ -29,4 +30,4 @@ export default async function handler(
   responseSuccess(res, project);
 }
 
-export type IProjectShowResponse = Project;
+export type IProjectShowOutput = Project;

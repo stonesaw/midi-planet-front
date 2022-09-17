@@ -10,6 +10,6 @@ interface BasePageProps {
 
 export type CustomPageProps = BasePageProps;
 
-export type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };

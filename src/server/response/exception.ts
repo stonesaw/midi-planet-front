@@ -6,6 +6,7 @@ const STATUS = {
   401: "UNAUTHORIZED",
   403: "FORBIDDEN",
   404: "NOT FOUND",
+  405: "METHOD NOT ALLOWED",
 } as const;
 
 export const responseException = (

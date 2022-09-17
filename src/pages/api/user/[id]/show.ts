@@ -14,6 +14,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IUserShowResponse>
 ) {
+  if (req.method !== "GET") return responseException(res, 405);
   const userId = req.query.id as string;
   const user = await prisma.user.findUnique({
     where: {
