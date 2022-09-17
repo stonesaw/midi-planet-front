@@ -26,7 +26,6 @@ export interface Radius {
 export interface IBaseElement {
   id: number;
   type?: string;
-  id: number;
   name: string;
   x: number;
   y: number;
