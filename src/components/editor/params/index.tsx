@@ -6,13 +6,15 @@ import {
   NumberInputField,
 } from "@chakra-ui/react";
 
-import { AppearanceParamsEditor } from "@/components/editor/params/sections/appearance";
-import { BorderParamsEditor } from "@/components/editor/params/sections/border";
-import { ColorParamsEditor } from "@/components/editor/params/sections/color";
-import { DurationParamsEditor } from "@/components/editor/params/sections/duration";
-import { RadiusParamsEditor } from "@/components/editor/params/sections/radius";
-import { TextParamsEditor } from "@/components/editor/params/sections/text";
-import { TopParamsEditor } from "@/components/editor/params/sections/top";
+import { AppearanceSection } from "@/components/editor/params/sections/appearance";
+import { BorderSection } from "@/components/editor/params/sections/border";
+import { ColorSection } from "@/components/editor/params/sections/color";
+import { DurationSection } from "@/components/editor/params/sections/duration";
+import { MIDISection } from "@/components/editor/params/sections/midi";
+import { MIDITopSection } from "@/components/editor/params/sections/midiTop";
+import { RadiusSection } from "@/components/editor/params/sections/radius";
+import { TextSection } from "@/components/editor/params/sections/text";
+import { TopSection } from "@/components/editor/params/sections/top";
 import { useEditor } from "@/providers/editor";
 
 export const ParamsEditor = () => {
@@ -44,14 +46,16 @@ export const ParamsEditor = () => {
 
       {singleTimeLine[selectedElementIndex] && (
         <>
-          <TopParamsEditor />
+          <TopSection />
           <Divider orientation="horizontal" colorScheme="white.700" />
-          <AppearanceParamsEditor />
-          <ColorParamsEditor />
-          <TextParamsEditor />
-          <DurationParamsEditor />
-          <BorderParamsEditor />
-          <RadiusParamsEditor />
+          <MIDITopSection />
+          <AppearanceSection />
+          <MIDISection />
+          <TextSection />
+          <ColorSection />
+          <DurationSection />
+          <BorderSection />
+          <RadiusSection />
         </>
       )}
     </VStack>

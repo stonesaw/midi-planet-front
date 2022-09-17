@@ -6,7 +6,7 @@ import { BaseRowOptional, BaseSectionOptional } from "./base";
 import { useEditor } from "@/providers/editor";
 import { Duration } from "@/types/editor/element";
 
-export const DurationParamsEditor = () => {
+export const DurationSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 

@@ -4,7 +4,7 @@ import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 import { BaseRow, BaseSection } from "@/components/editor/params/sections/base";
 import { useEditor } from "@/providers/editor";
 
-export const AppearanceParamsEditor = () => {
+export const AppearanceSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 

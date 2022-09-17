@@ -1,35 +1,42 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseRowString, BaseSection } from "./base";
-import { InputColor } from "./inputColor";
-
+import { BaseRow, BaseSection } from "@/components/editor/params/sections/base";
 import { useEditor } from "@/providers/editor";
 
-export const TextSection = () => {
+export const MIDIAppearanceSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 
   const currentElm = singleTimeLine[selectedElementIndex];
-  if (!("text" in currentElm && "font" in currentElm && "color" in currentElm))
-    return <></>;
+  if (!("shape" in currentElm)) return <></>;
 
   return (
-    <BaseSection title="Text">
+    <BaseSection title="Notes">
       <VStack align="flex-end">
         <Table variant="unstyled">
           <Tbody>
             <Tr>
               <Td p={2}>
-                <BaseRowString
-                  paramName="T"
-                  paramValue={currentElm.text}
+                <BaseRow
+                  paramName="ox"
+                  paramValue={currentElm.shape.x}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
                     const a = newTimeLine[selectedElementIndex];
-                    if ("text" in a) {
-                      a.text = value;
-                    }
+                    if ("shape" in a) a.shape.x = value;
+                    setSingleTimeLine(newTimeLine);
+                  }}
+                />
+              </Td>
+              <Td p={2}>
+                <BaseRow
+                  paramName="oy"
+                  paramValue={currentElm.shape.y}
+                  onChange={(value) => {
+                    const newTimeLine = [...singleTimeLine];
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("shape" in a) a.shape.y = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />
@@ -37,31 +44,25 @@ export const TextSection = () => {
             </Tr>
             <Tr>
               <Td p={2}>
-                {/* TODO: セレクトボックスにしたいかも
-                https://p5js.org/reference/#/p5/textFont
-                https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals#web_safe_fonts */}
-                <BaseRowString
-                  paramName="F"
-                  paramValue={currentElm.font ?? ""}
+                <BaseRow
+                  paramName="W"
+                  paramValue={currentElm.shape.width}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
                     const a = newTimeLine[selectedElementIndex];
-                    if ("font" in a) {
-                      a.font = String(value);
-                    }
+                    if ("shape" in a) a.shape.width = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />
               </Td>
-            </Tr>
-            <Tr>
               <Td p={2}>
-                <InputColor
-                  paramColor={currentElm.color}
-                  onChange={(color) => {
+                <BaseRow
+                  paramName="H"
+                  paramValue={currentElm.shape.height}
+                  onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
                     const a = newTimeLine[selectedElementIndex];
-                    if ("color" in a) a.color = color;
+                    if ("shape" in a) a.shape.height = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />

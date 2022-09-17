@@ -1,26 +1,30 @@
 import { Table, Tbody, Td, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseSection } from "./base";
-import { InputColor } from "./inputColor";
+import { BaseSection } from "./../base";
+import { InputColor } from "./../inputColor";
 
 import { useEditor } from "@/providers/editor";
 
-export const ColorSection = () => {
+export const MIDIColorSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 
+  const currentElm = singleTimeLine[selectedElementIndex];
+  if (!("shape" in currentElm)) return <></>;
+
   return (
-    <BaseSection title="Color">
+    <BaseSection title="Notes - Color">
       <VStack align="flex-end">
         <Table variant="unstyled">
           <Tbody>
             <Tr>
               <Td p={2}>
                 <InputColor
-                  paramColor={singleTimeLine[selectedElementIndex].background}
+                  paramColor={currentElm.shape.background}
                   onChange={(color) => {
                     const newTimeLine = [...singleTimeLine];
-                    newTimeLine[selectedElementIndex].background = color;
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("shape" in a) a.shape.background = color;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />

@@ -1,12 +1,12 @@
 import { Table, Tbody, Td, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseSectionOptional, BaseRow } from "./base";
-import { InputColor } from "./inputColor";
+import { BaseSectionOptional, BaseRow } from "./../base";
+import { InputColor } from "./../inputColor";
 
 import { useEditor } from "@/providers/editor";
 import { Border } from "@/types/editor/element";
 
-export const BorderSection = () => {
+export const MIDIBorderSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 
@@ -19,26 +19,27 @@ export const BorderSection = () => {
   };
 
   const currentElm = singleTimeLine[selectedElementIndex];
-  if (!("border" in currentElm)) return <></>;
+  if (!("shape" in currentElm && "border" in currentElm.shape)) return <></>;
 
   return (
     <BaseSectionOptional
-      title="Border"
-      isExistContent={currentElm?.border ? true : false}
+      title="Notes - Border"
+      isExistContent={currentElm?.shape.border ? true : false}
       onAdd={() => {
         const newTimeLine = [...singleTimeLine];
         const a = newTimeLine[selectedElementIndex];
-        if ("border" in a) a.border = DEFAULT_BORDER_PARAMS;
+        if ("shape" in a && "border" in a.shape)
+          a.shape.border = DEFAULT_BORDER_PARAMS;
         setSingleTimeLine(newTimeLine);
       }}
       onRemove={() => {
         const newTimeLine = [...singleTimeLine];
         const a = newTimeLine[selectedElementIndex];
-        if ("border" in a) a.border = undefined;
+        if ("shape" in a && "border" in a.shape) a.shape.border = undefined;
         setSingleTimeLine(newTimeLine);
       }}
     >
-      {currentElm.border && (
+      {currentElm.shape.border && (
         <VStack align="flex-end">
           <Table variant="unstyled">
             <Tbody>
@@ -46,12 +47,12 @@ export const BorderSection = () => {
                 <Td p={2}>
                   <BaseRow
                     paramName="T"
-                    paramValue={currentElm.border.size}
+                    paramValue={currentElm.shape.border.size}
                     onChange={(value) => {
                       const newTimeLine = [...singleTimeLine];
                       const a = newTimeLine[selectedElementIndex];
-                      if ("border" in a) {
-                        if (a.border) a.border.size = value;
+                      if ("shape" in a && "border" in a.shape) {
+                        if (a.shape.border) a.shape.border.size = value;
                       }
                       setSingleTimeLine(newTimeLine);
                     }}
@@ -61,12 +62,12 @@ export const BorderSection = () => {
               <Tr>
                 <Td p={2}>
                   <InputColor
-                    paramColor={currentElm.border.color}
+                    paramColor={currentElm.shape.border.color}
                     onChange={(color) => {
                       const newTimeLine = [...singleTimeLine];
                       const a = newTimeLine[selectedElementIndex];
-                      if ("border" in a) {
-                        if (a.border) a.border.color = color;
+                      if ("shape" in a && "border" in a.shape) {
+                        if (a.shape.border) a.shape.border.color = color;
                       }
                       setSingleTimeLine(newTimeLine);
                     }}

@@ -51,6 +51,15 @@ export interface IMIDI extends IBaseElement {
   border?: Border;
 }
 
+export const MIDIAnimationTypes = ["sep2", "sep4", "sep8", "scroll"] as const;
+
+export const MIDIAnimationTypesText = {
+  sep2: "2小節",
+  sep4: "4小節",
+  sep8: "8小節",
+  scroll: "スクロール",
+} as const;
+
 export interface IText extends IBaseElement {
   type: "TEXT";
   text: string;

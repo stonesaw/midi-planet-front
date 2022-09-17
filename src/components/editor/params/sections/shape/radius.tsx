@@ -1,11 +1,11 @@
 import { Table, Tbody, Td, Tr, VStack } from "@chakra-ui/react";
 
-import { BaseSectionOptional, BaseRow } from "./base";
+import { BaseSectionOptional, BaseRow } from "./../base";
 
 import { useEditor } from "@/providers/editor";
 import { Radius } from "@/types/editor/element";
 
-export const RadiusSection = () => {
+export const MIDIRadiusSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 
@@ -17,26 +17,27 @@ export const RadiusSection = () => {
   };
 
   const currentElm = singleTimeLine[selectedElementIndex];
-  if (!("radius" in currentElm)) return <></>;
+  if (!("shape" in currentElm && "radius" in currentElm.shape)) return <></>;
 
   return (
     <BaseSectionOptional
-      title="Radius"
-      isExistContent={currentElm?.radius ? true : false}
+      title="Notes - Radius"
+      isExistContent={currentElm?.shape.radius ? true : false}
       onAdd={() => {
         const newTimeLine = [...singleTimeLine];
         const a = newTimeLine[selectedElementIndex];
-        if ("radius" in a) a.radius = DEFAULT_RADIUS_PARAMS;
+        if ("shape" in a && "radius" in a.shape)
+          a.shape.radius = DEFAULT_RADIUS_PARAMS;
         setSingleTimeLine(newTimeLine);
       }}
       onRemove={() => {
         const newTimeLine = [...singleTimeLine];
         const a = newTimeLine[selectedElementIndex];
-        if ("radius" in a) a.radius = undefined;
+        if ("shape" in a && "radius" in a.shape) a.shape.radius = undefined;
         setSingleTimeLine(newTimeLine);
       }}
     >
-      {currentElm.radius && (
+      {currentElm.shape.radius && (
         <VStack align="flex-end">
           <Table variant="unstyled">
             <Tbody>
@@ -44,12 +45,12 @@ export const RadiusSection = () => {
                 <Td p={2}>
                   <BaseRow
                     paramName="┌"
-                    paramValue={currentElm.radius.topLeft}
+                    paramValue={currentElm.shape.radius.topLeft}
                     onChange={(value) => {
                       const newTimeLine = [...singleTimeLine];
                       const a = newTimeLine[selectedElementIndex];
-                      if ("radius" in a) {
-                        if (a.radius) a.radius.topLeft = value;
+                      if ("shape" in a && "radius" in a.shape) {
+                        if (a.shape.radius) a.shape.radius.topLeft = value;
                       }
                       setSingleTimeLine(newTimeLine);
                     }}
@@ -58,12 +59,12 @@ export const RadiusSection = () => {
                 <Td p={2}>
                   <BaseRow
                     paramName="┐"
-                    paramValue={currentElm.radius.topRight}
+                    paramValue={currentElm.shape.radius.topRight}
                     onChange={(value) => {
                       const newTimeLine = [...singleTimeLine];
                       const a = newTimeLine[selectedElementIndex];
-                      if ("radius" in a) {
-                        if (a.radius) a.radius.topRight = value;
+                      if ("shape" in a && "radius" in a.shape) {
+                        if (a.shape.radius) a.shape.radius.topRight = value;
                       }
                       setSingleTimeLine(newTimeLine);
                     }}
@@ -74,12 +75,12 @@ export const RadiusSection = () => {
                 <Td p={2}>
                   <BaseRow
                     paramName="└"
-                    paramValue={currentElm.radius.bottomLeft}
+                    paramValue={currentElm.shape.radius.bottomLeft}
                     onChange={(value) => {
                       const newTimeLine = [...singleTimeLine];
                       const a = newTimeLine[selectedElementIndex];
-                      if ("radius" in a) {
-                        if (a.radius) a.radius.bottomLeft = value;
+                      if ("shape" in a && "radius" in a.shape) {
+                        if (a.shape.radius) a.shape.radius.bottomLeft = value;
                       }
                       setSingleTimeLine(newTimeLine);
                     }}
@@ -88,12 +89,12 @@ export const RadiusSection = () => {
                 <Td p={2}>
                   <BaseRow
                     paramName="┘"
-                    paramValue={currentElm.radius.bottomRight}
+                    paramValue={currentElm.shape.radius.bottomRight}
                     onChange={(value) => {
                       const newTimeLine = [...singleTimeLine];
                       const a = newTimeLine[selectedElementIndex];
-                      if ("radius" in a) {
-                        if (a.radius) a.radius.bottomRight = value;
+                      if ("shape" in a && "radius" in a.shape) {
+                        if (a.shape.radius) a.shape.radius.bottomRight = value;
                       }
                       setSingleTimeLine(newTimeLine);
                     }}

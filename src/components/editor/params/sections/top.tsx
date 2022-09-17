@@ -2,7 +2,7 @@ import { Input, HStack, Text, Spacer, Box } from "@chakra-ui/react";
 
 import { useEditor } from "@/providers/editor";
 
-export const TopParamsEditor = () => {
+export const TopSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 
