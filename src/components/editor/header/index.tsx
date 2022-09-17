@@ -17,9 +17,6 @@ import { useEffect, useRef } from "react";
 
 import AudioControl from "@/components/editor/header/audioControl";
 import { loadMidi } from "@/libs/midi";
-import { toColor } from "@/libs/utils";
-import MIDI from "@/model/editor/midi";
-import Shape from "@/model/editor/shape";
 import { useEditor } from "@/providers/editor";
 
 export const HeaderEditor = () => {
@@ -30,8 +27,9 @@ export const HeaderEditor = () => {
     setMidi,
     setAudioSrc,
     audioSrc,
-    singleTimeLine,
-    setSingleTimeLine,
+    newMIDIElement,
+    newShapeElement,
+    newTextElement,
   } = useEditor();
 
   const handleUploadMidi = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,24 +37,9 @@ export const HeaderEditor = () => {
     const file = e.target.files[0];
     const midi = await loadMidi(file);
     if (typeof midi == "string") {
-      setMidi(JSON.parse(midi));
-
-      const newSingleTimeLine = [...singleTimeLine];
-      newSingleTimeLine.push(
-        new MIDI(
-          0,
-          "MIDIだよ！",
-          JSON.parse(midi),
-          "sep4",
-          100,
-          100,
-          520,
-          520,
-          toColor("#fff"),
-          new Shape(1, "a", 0, 0, 0, 16, toColor("#5BE8FD"))
-        )
-      );
-      setSingleTimeLine(newSingleTimeLine);
+      const midiJson = JSON.parse(midi);
+      setMidi(midiJson);
+      newMIDIElement(midiJson);
     }
   };
 
@@ -120,6 +103,26 @@ export const HeaderEditor = () => {
                 w="100%"
               >
                 Import MIDI
+              </FormLabel>
+            </MenuItem>
+            <MenuItem>
+              <FormLabel
+                cursor="pointer"
+                m={0}
+                w="100%"
+                onClick={newShapeElement}
+              >
+                Add Shape
+              </FormLabel>
+            </MenuItem>
+            <MenuItem>
+              <FormLabel
+                cursor="pointer"
+                m={0}
+                w="100%"
+                onClick={newTextElement}
+              >
+                Add Text
               </FormLabel>
             </MenuItem>
           </MenuList>
