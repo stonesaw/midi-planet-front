@@ -12,6 +12,8 @@ class Text extends BaseElement implements IText {
   font?: string;
 
   constructor(
+    id: number,
+    name: string,
     x: number,
     y: number,
     width: number,

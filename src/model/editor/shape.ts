@@ -16,6 +16,7 @@ class Shape extends BaseElement implements IShape {
   border?: Border;
 
   constructor(
+    id: number,
     x: number,
     y: number,
     width: number,
@@ -27,7 +28,7 @@ class Shape extends BaseElement implements IShape {
       border?: Border;
     }
   ) {
-    super("Shape", x, y, width, height, background, option?.duration);
+    super(id, "Shape", x, y, width, height, background, option?.duration);
     this.radius = option?.radius;
     this.border = option?.border;
   }

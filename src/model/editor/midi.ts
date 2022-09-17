@@ -14,6 +14,7 @@ class MIDI extends BaseElement implements IMIDI {
   shape: Shape;
 
   constructor(
+    id: number,
     midi: MidiJSON,
     animation: "sep2" | "sep4" | "sep8" | "scroll",
     x: number,
@@ -26,7 +27,7 @@ class MIDI extends BaseElement implements IMIDI {
       duration?: Duration;
     }
   ) {
-    super("MIDI", x, y, width, height, background, option?.duration);
+    super(id, "MIDI", x, y, width, height, background, option?.duration);
     this.midi = midi;
     this.animation = animation;
     this.shape = shape;
