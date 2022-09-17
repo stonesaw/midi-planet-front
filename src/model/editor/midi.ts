@@ -5,20 +5,13 @@ import p5Types from "p5";
 import { BaseElement } from "./baseElement";
 import Shape from "./shape";
 
-import { Color, IMidi, Radius } from "@/types/editor/element";
+import { Color, Duration, IMIDI } from "@/types/editor/element";
 
-interface ShapeBorder {
-  size: number;
-  color: string;
-}
-
-class MIDI extends BaseElement implements IMidi {
+class MIDI extends BaseElement implements IMIDI {
   type!: "MIDI";
   midi: MidiJSON;
   animation: "sep2" | "sep4" | "sep8" | "scroll"; // TODO: scroll
   shape: Shape;
-  radius?: Radius; // [all] | [top-left, top-right, bottom-right, bottom-left]
-  border?: ShapeBorder;
 
   constructor(
     midi: MidiJSON,
@@ -30,27 +23,13 @@ class MIDI extends BaseElement implements IMidi {
     background: Color,
     shape: Shape,
     option?: {
-      startMs?: number;
-      endMs?: number;
-      radius?: Radius;
-      border?: ShapeBorder;
+      duration?: Duration;
     }
   ) {
-    super(
-      "MIDI",
-      x,
-      y,
-      width,
-      height,
-      background,
-      option?.startMs,
-      option?.endMs
-    );
+    super("MIDI", x, y, width, height, background, option?.duration);
     this.midi = midi;
     this.animation = animation;
     this.shape = shape;
-    this.radius = option?.radius;
-    this.border = option?.border;
   }
 
   draw(p5: p5Types, currentTimeMs: number, currentBeat: number) {
@@ -59,19 +38,12 @@ class MIDI extends BaseElement implements IMidi {
     }
 
     // draw background
-    if (this.border) {
-      p5.stroke(p5.color(this.border.color));
-    } else {
-      p5.noStroke();
-    }
-
-    p5.fill(p5.color(...this.background.rgb, this.background.alpha));
+    p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),
       this.toRealX(p5, this.width),
-      this.toRealY(p5, this.height),
-      ...(this.radius ? Object.values(this.radius) : [0])
+      this.toRealY(p5, this.height)
     );
 
     // draw midi

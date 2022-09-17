@@ -1,6 +1,6 @@
 import p5Types from "p5";
 
-import { Color, IBaseElement } from "@/types/editor/element";
+import { Color, Duration, IBaseElement } from "@/types/editor/element";
 
 export class BaseElement implements IBaseElement {
   name: string;
@@ -9,8 +9,7 @@ export class BaseElement implements IBaseElement {
   width: number;
   height: number;
   background: Color;
-  startMs?: number;
-  endMs?: number;
+  duration?: Duration;
 
   constructor(
     name: string,
@@ -19,8 +18,7 @@ export class BaseElement implements IBaseElement {
     width: number,
     height: number,
     background: Color,
-    startMs?: number,
-    endMs?: number
+    duration?: Duration
   ) {
     this.name = name;
     this.x = x;
@@ -28,14 +26,14 @@ export class BaseElement implements IBaseElement {
     this.width = width;
     this.height = height;
     this.background = background;
-    this.startMs = startMs;
-    this.endMs = endMs;
+    this.duration = duration;
   }
 
   isDraw(currentTimeMs: number) {
     if (
-      currentTimeMs < (this.startMs || -Infinity) ||
-      (this.endMs || Infinity) < currentTimeMs
+      this.duration &&
+      (currentTimeMs < (this.duration.startMs || -Infinity) ||
+        (this.duration.endMs || Infinity) < currentTimeMs)
     ) {
       return false;
     }
