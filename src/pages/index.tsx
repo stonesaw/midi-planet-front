@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
     props: {
       title: "ホーム",
       isIndex: true,
-      projects,
+      projects: projects ?? [],
     },
   };
 };
