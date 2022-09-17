@@ -18,7 +18,7 @@ interface Props extends CustomPageProps {
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const projects = await fetchProjects();
-  if (!projects) return { notFound: true };
+  // if (!projects) return { notFound: true };
 
   return {
     props: {
