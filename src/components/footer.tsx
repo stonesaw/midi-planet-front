@@ -1,9 +1,4 @@
-import {
-  Box,
-  Text,
-  Flex,
-  HStack,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, HStack } from "@chakra-ui/react";
 import Image from "next/image";
 
 import { Title } from "@/components/title";
