@@ -15,7 +15,7 @@ export const DurationParamsEditor = () => {
   return (
     <BaseSectionOptional
       title="Duration"
-      defaultValue={
+      isExistContent={
         singleTimeLine[selectedElementIndex].duration ? true : false
       }
       onAdd={() => {
@@ -40,8 +40,6 @@ export const DurationParamsEditor = () => {
                     singleTimeLine[selectedElementIndex].duration?.startMs
                   }
                   onChange={(value) => {
-                    console.log("start");
-                    console.log(value);
                     const newTimeLine = [...singleTimeLine];
                     const a = newTimeLine[selectedElementIndex];
                     if (a.duration) a.duration.startMs = value;
@@ -56,8 +54,6 @@ export const DurationParamsEditor = () => {
                     singleTimeLine[selectedElementIndex].duration?.endMs
                   }
                   onChange={(value) => {
-                    console.log("end");
-                    console.log(value);
                     const newTimeLine = [...singleTimeLine];
                     const a = newTimeLine[selectedElementIndex];
                     if (a.duration) a.duration.endMs = value;

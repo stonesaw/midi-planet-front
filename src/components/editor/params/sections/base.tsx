@@ -35,7 +35,7 @@ export const BaseSection = ({ title, children }: Props) => {
 
 interface BaseSectionOptionalProps {
   title: string;
-  defaultValue: boolean;
+  isExistContent: boolean;
   children: ReactNode;
   onAdd: () => void;
   onRemove: () => void;
@@ -43,12 +43,12 @@ interface BaseSectionOptionalProps {
 
 export const BaseSectionOptional = ({
   title,
-  defaultValue,
+  isExistContent,
   children,
   onAdd,
   onRemove,
 }: BaseSectionOptionalProps) => {
-  const [existContent, setExistContent] = useState<boolean>(defaultValue);
+  const [existContent, setExistContent] = useState<boolean>(isExistContent);
 
   const handle = () => {
     if (existContent) {
@@ -101,9 +101,9 @@ export const BaseRow = ({ paramName, paramValue, onChange }: BaseRowProps) => (
     </Text>
     <NumberInput
       color="gray.50"
-      defaultValue={paramValue}
+      value={paramValue}
       min={0}
-      onBlur={(e) => onChange(Number(e.target.value))}
+      onChange={(_, value) => onChange(value || 0)}
     >
       <NumberInputField borderColor="gray.500" pl={2} pr={2} />
     </NumberInput>
@@ -130,9 +130,9 @@ export const BaseRowOptional = ({
     </Text>
     <NumberInput
       color="gray.50"
-      defaultValue={paramValue}
+      value={paramValue}
       min={0}
-      onBlur={(e) => onChange(Number(e.target.value))}
+      onChange={(_, value) => onChange(value || 0)}
     >
       <NumberInputField borderColor="gray.500" pl={2} pr={2} />
     </NumberInput>

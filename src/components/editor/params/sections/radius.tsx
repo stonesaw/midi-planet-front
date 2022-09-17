@@ -22,7 +22,7 @@ export const RadiusParamsEditor = () => {
   return (
     <BaseSectionOptional
       title="Radius"
-      defaultValue={currentElm?.radius ? true : false}
+      isExistContent={currentElm?.radius ? true : false}
       onAdd={() => {
         const newTimeLine = [...singleTimeLine];
         const a = newTimeLine[selectedElementIndex];

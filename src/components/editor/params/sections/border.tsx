@@ -24,7 +24,7 @@ export const BorderParamsEditor = () => {
   return (
     <BaseSectionOptional
       title="Border"
-      defaultValue={currentElm?.border ? true : false}
+      isExistContent={currentElm?.border ? true : false}
       onAdd={() => {
         const newTimeLine = [...singleTimeLine];
         const a = newTimeLine[selectedElementIndex];
