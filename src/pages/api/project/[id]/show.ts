@@ -9,20 +9,24 @@ import {
 } from "@/server/response/exception";
 
 export default async function handler(
-  _req: NextApiRequest,
-  res: NextApiResponse<ProjectIndexResponse>
+  req: NextApiRequest,
+  res: NextApiResponse<ProjectShowResponse>
 ) {
   const session = await getSession();
   if (!session) return responseException(res, 401);
   if (!session.user) return responseException(res, 401);
 
-  const projects = await prisma.project.findMany({
+  const projectId = req.query.id as string;
+  const project = await prisma.project.findUnique({
     where: {
-      ownerId: session.user.id,
+      id: projectId,
     },
   });
 
-  responseSuccess(res, projects);
+  if (!project) return responseException(res, 404);
+  if (project.ownerId !== session.user.id) return responseException(res, 403);
+
+  responseSuccess(res, project);
 }
 
-export type ProjectIndexResponse = Project[];
+export type ProjectShowResponse = Project;
