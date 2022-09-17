@@ -1,6 +1,6 @@
 import { Box, Heading, StackDivider, VStack } from "@chakra-ui/react";
 import { Project, User } from "@prisma/client";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 import HeaderFooterLayout from "@/components/layouts/headerFooter";
 import { ProjectList } from "@/components/project/list";
@@ -16,7 +16,7 @@ interface Props extends CustomPageProps {
   >[];
 }
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
   const projects = await fetchProjects();
   if (!projects) return { notFound: true };
 
