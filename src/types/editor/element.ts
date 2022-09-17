@@ -3,7 +3,7 @@ import p5Types from "p5";
 
 export interface Color {
   rgb: [number, number, number]; // 0-255
-  alpha: number; // 0 to 255
+  alpha: number; // 0 to 100
 }
 
 export interface Border {
@@ -24,8 +24,8 @@ export interface Radius {
 }
 
 export interface IBaseElement {
-  type?: string;
   id: number;
+  type?: string;
   name: string;
   x: number;
   y: number;
@@ -50,6 +50,15 @@ export interface IMIDI extends IBaseElement {
   radius?: Radius;
   border?: Border;
 }
+
+export const MIDIAnimationTypes = ["sep2", "sep4", "sep8", "scroll"] as const;
+
+export const MIDIAnimationTypesText = {
+  sep2: "2小節",
+  sep4: "4小節",
+  sep8: "8小節",
+  scroll: "スクロール",
+} as const;
 
 export interface IText extends IBaseElement {
   type: "TEXT";

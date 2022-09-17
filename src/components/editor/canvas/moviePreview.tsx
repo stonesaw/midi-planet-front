@@ -21,8 +21,6 @@ let fps = 0;
 // midi
 let bpm = 0;
 
-// TODO: use Context
-
 interface Props {
   maxSize: {
     width: number;
@@ -31,7 +29,7 @@ interface Props {
 }
 
 export const MoviePreview = ({ maxSize }: Props) => {
-  const { midi, setMidi, audioState } = useEditor();
+  const { midi, setMidi, audioState, singleTimeLine } = useEditor();
 
   const [timer, setTimer] = useState<number>(0); // 再生時間 (ミリ秒)
   const [beatCounter, setBeatCounter] = useState<number>(0); // 拍子のカウント
@@ -57,6 +55,7 @@ export const MoviePreview = ({ maxSize }: Props) => {
 
     // timer
     if ((audioState === "play") !== beforePlayed) {
+      // FIXME: 2度目の init になった後に、playするとバグ
       if (audioState === "play") {
         // p5.print("start! (0)");
         startTime = currentTime;
@@ -78,13 +77,12 @@ export const MoviePreview = ({ maxSize }: Props) => {
     p5.rect(0, 0, p5.width, p5.height);
 
     // draw objects
-
-    p5.textSize(16);
-    p5.fill(50);
-    p5.text("hello", 200, 100, 100, 100);
+    singleTimeLine.forEach((elm) => elm.draw(p5, currentTime, beatCounter));
 
     // draw midi
     if (midi) {
+      // TODO: define Provider
+
       bpm = midi.header.tempos[0].bpm;
       setMidi(null);
     }

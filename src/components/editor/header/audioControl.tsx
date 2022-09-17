@@ -11,6 +11,10 @@ const AudioControl = () => {
     else setAudioState("play");
   };
 
+  const setInit = () => {
+    setAudioState("init");
+  };
+
   const audioControlMiddleIcon = () => {
     if (audioState === "play") return <FaPause />;
     if (audioState === "pause") return <FaPlay />;
@@ -28,6 +32,7 @@ const AudioControl = () => {
         variant="ghost"
         colorScheme="brand"
         aria-label="Play Back"
+        onClick={setInit}
         icon={<FaBackward />}
       />
       <IconButton

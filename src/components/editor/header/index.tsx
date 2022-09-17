@@ -22,13 +22,25 @@ import { useEditor } from "@/providers/editor";
 export const HeaderEditor = () => {
   const refMidiInput = useRef<HTMLInputElement>(null);
   const refAudio = useRef<HTMLAudioElement>(null);
-  const { audioState, setMidi, setAudioSrc, audioSrc } = useEditor();
+  const {
+    audioState,
+    setMidi,
+    setAudioSrc,
+    audioSrc,
+    newMIDIElement,
+    newShapeElement,
+    newTextElement,
+  } = useEditor();
 
   const handleUploadMidi = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) return;
     const file = e.target.files[0];
     const midi = await loadMidi(file);
-    if (typeof midi == "string") setMidi(JSON.parse(midi));
+    if (typeof midi == "string") {
+      const midiJson = JSON.parse(midi);
+      setMidi(midiJson);
+      newMIDIElement(midiJson);
+    }
   };
 
   const handleUploadAudio = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +103,26 @@ export const HeaderEditor = () => {
                 w="100%"
               >
                 Import MIDI
+              </FormLabel>
+            </MenuItem>
+            <MenuItem>
+              <FormLabel
+                cursor="pointer"
+                m={0}
+                w="100%"
+                onClick={newShapeElement}
+              >
+                Add Shape
+              </FormLabel>
+            </MenuItem>
+            <MenuItem>
+              <FormLabel
+                cursor="pointer"
+                m={0}
+                w="100%"
+                onClick={newTextElement}
+              >
+                Add Text
               </FormLabel>
             </MenuItem>
           </MenuList>

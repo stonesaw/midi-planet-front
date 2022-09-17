@@ -40,6 +40,8 @@ class Text extends BaseElement implements IText {
       return;
     }
 
+    p5.noStroke();
+
     // draw background
     p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
@@ -49,7 +51,7 @@ class Text extends BaseElement implements IText {
       this.toRealY(p5, this.height)
     );
 
-    p5.fill(p5.color(...this.color.rgb, this.color.alpha));
+    p5.fill(p5.color(...this.color.rgb, this.color.alpha * 2.55));
     p5.textSize(this.toRealY(p5, this.size));
     if (this.font) {
       p5.textFont(this.font);

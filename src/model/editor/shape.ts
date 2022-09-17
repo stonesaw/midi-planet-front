@@ -2,6 +2,7 @@ import p5Types from "p5";
 
 import { BaseElement } from "./baseElement";
 
+import { toP5Radius } from "@/libs/utils";
 import {
   IShape,
   Border,
@@ -17,6 +18,7 @@ class Shape extends BaseElement implements IShape {
 
   constructor(
     id: number,
+    name: string,
     x: number,
     y: number,
     width: number,
@@ -28,31 +30,34 @@ class Shape extends BaseElement implements IShape {
       border?: Border;
     }
   ) {
-    super(id, "Shape", x, y, width, height, background, option?.duration);
+    super(id, name, x, y, width, height, background, option?.duration);
+    this.type = "SHAPE";
     this.radius = option?.radius;
     this.border = option?.border;
   }
 
   draw(p5: p5Types, currentTimeMs: number) {
-    if (!this.isDraw(currentTimeMs)) {
-      return;
-    }
+    if (!this.isDraw(currentTimeMs)) return;
 
-    if (this.border) {
-      p5.stroke(p5.color(...this.border.color.rgb, this.border.color.alpha));
-      p5.strokeWeight(this.toRealX(p5, this.border.size));
-    } else {
-      p5.noStroke();
-    }
+    this.drawBorder(p5, this.border);
 
-    p5.fill(p5.color(...this.background.rgb, this.background.alpha));
+    p5.fill(this.toP5Color(p5, this.background));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),
       this.toRealX(p5, this.width),
       this.toRealY(p5, this.height),
-      ...(this.radius ? Object.values(this.radius) : [0])
+      ...toP5Radius(this.radius)
     );
+  }
+
+  drawBorder(p5: p5Types, border?: Border) {
+    if (border) {
+      p5.stroke(this.toP5Color(p5, border.color));
+      p5.strokeWeight(this.toRealX(p5, border.size));
+    } else {
+      p5.noStroke();
+    }
   }
 }
 

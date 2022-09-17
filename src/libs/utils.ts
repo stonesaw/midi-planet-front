@@ -1,6 +1,6 @@
-// 3.14, 0.1 -> 3.1
-
 import { Color, Radius } from "@/types/editor/element";
+
+// math, calculate
 
 export function floorAt(num: number, at = 0): number {
   if (at != 0) {
@@ -23,6 +23,8 @@ export function toMinutes(milliSec: number, decimal = 0.01): string {
   return `${Math.floor(sec / 60)}:${roundAt(sec % 60, decimal)}`;
 }
 
+// radius
+
 export function toRadius(radius: number[]): Radius {
   if (radius.length == 1) {
     return {
@@ -40,6 +42,19 @@ export function toRadius(radius: number[]): Radius {
     };
   }
 }
+
+export function toP5Radius(radius?: Radius): number[] {
+  return radius
+    ? [
+        radius["topLeft"],
+        radius["topRight"],
+        radius["bottomRight"],
+        radius["bottomLeft"],
+      ]
+    : [0];
+}
+
+// color
 
 export function hex2rgb(hex: string): [number, number, number] {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -61,13 +76,22 @@ export function hex2rgb(hex: string): [number, number, number] {
       parseInt(result[3], 16),
     ];
   } else {
-    throw new Error("failed convert. (hex to rgb)");
+    throw new Error(`failed convert. value: ${hex}`);
   }
+}
+
+function componentToHex(c: number) {
+  const hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+export function rgb2hex(r: number, g: number, b: number) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 export function toColor(
   color: string | [number, number, number],
-  alpha = 255
+  alpha = 100
 ): Color {
   return {
     rgb: typeof color == "string" ? hex2rgb(color) : color,

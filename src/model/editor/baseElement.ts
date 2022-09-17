@@ -4,6 +4,7 @@ import { Color, Duration, IBaseElement } from "@/types/editor/element";
 
 export class BaseElement implements IBaseElement {
   id: number;
+  type?: string;
   name: string;
   x: number;
   y: number;
@@ -57,5 +58,9 @@ export class BaseElement implements IBaseElement {
     const canvasHeight = p5.height;
     const virtualHeight = 720;
     return (x * canvasHeight) / virtualHeight;
+  }
+
+  toP5Color(p5: p5Types, color: Color) {
+    return p5.color(...color.rgb, color.alpha * 2.55);
   }
 }

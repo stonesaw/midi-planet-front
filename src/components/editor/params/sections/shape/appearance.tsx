@@ -4,34 +4,39 @@ import { Button, Table, Tbody, Td, Text, Tr, VStack } from "@chakra-ui/react";
 import { BaseRow, BaseSection } from "@/components/editor/params/sections/base";
 import { useEditor } from "@/providers/editor";
 
-export const AppearanceSection = () => {
+export const MIDIAppearanceSection = () => {
   const { singleTimeLine, setSingleTimeLine, selectedElementIndex } =
     useEditor();
 
+  const currentElm = singleTimeLine[selectedElementIndex];
+  if (!("shape" in currentElm)) return <></>;
+
   return (
-    <BaseSection>
+    <BaseSection title="Notes">
       <VStack align="flex-end">
         <Table variant="unstyled">
           <Tbody>
             <Tr>
               <Td p={2}>
                 <BaseRow
-                  paramName="X"
-                  paramValue={singleTimeLine[selectedElementIndex].x}
+                  paramName="x"
+                  paramValue={currentElm.shape.x}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
-                    newTimeLine[selectedElementIndex].x = value;
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("shape" in a) a.shape.x = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />
               </Td>
               <Td p={2}>
                 <BaseRow
-                  paramName="Y"
-                  paramValue={singleTimeLine[selectedElementIndex].y}
+                  paramName="y"
+                  paramValue={currentElm.shape.y}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
-                    newTimeLine[selectedElementIndex].y = value;
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("shape" in a) a.shape.y = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />
@@ -40,22 +45,24 @@ export const AppearanceSection = () => {
             <Tr>
               <Td p={2}>
                 <BaseRow
-                  paramName="W"
-                  paramValue={singleTimeLine[selectedElementIndex].width}
+                  paramName="w"
+                  paramValue={currentElm.shape.width}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
-                    newTimeLine[selectedElementIndex].width = value;
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("shape" in a) a.shape.width = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />
               </Td>
               <Td p={2}>
                 <BaseRow
-                  paramName="H"
-                  paramValue={singleTimeLine[selectedElementIndex].height}
+                  paramName="h"
+                  paramValue={currentElm.shape.height}
                   onChange={(value) => {
                     const newTimeLine = [...singleTimeLine];
-                    newTimeLine[selectedElementIndex].height = value;
+                    const a = newTimeLine[selectedElementIndex];
+                    if ("shape" in a) a.shape.height = value;
                     setSingleTimeLine(newTimeLine);
                   }}
                 />
