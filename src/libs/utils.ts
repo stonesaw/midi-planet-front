@@ -1,6 +1,6 @@
-// 3.14, 0.1 -> 3.1
-
 import { Color, Radius } from "@/types/editor/element";
+
+// math, calculate
 
 export function floorAt(num: number, at = 0): number {
   if (at != 0) {
@@ -23,6 +23,8 @@ export function toMinutes(milliSec: number, decimal = 0.01): string {
   return `${Math.floor(sec / 60)}:${roundAt(sec % 60, decimal)}`;
 }
 
+// radius
+
 export function toRadius(radius: number[]): Radius {
   if (radius.length == 1) {
     return {
@@ -40,6 +42,19 @@ export function toRadius(radius: number[]): Radius {
     };
   }
 }
+
+export function toP5Radius(radius?: Radius): number[] {
+  return radius
+    ? [
+        radius["topLeft"],
+        radius["topRight"],
+        radius["bottomRight"],
+        radius["bottomLeft"],
+      ]
+    : [0];
+}
+
+// color
 
 export function hex2rgb(hex: string): [number, number, number] {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")

@@ -77,7 +77,7 @@ export const EditorProvider = ({ children }: Props) => {
         520,
         520,
         toColor("#fff", 0),
-        new Shape(1, "shape", 0, 0, 0, 16, toColor("#5BE8FD"))
+        new Shape(1, "shape", 0, 0, 100, 16, toColor("#5BE8FD"))
       )
     );
     setSingleTimeLine(newSingleTimeLine);

@@ -5,13 +5,22 @@ import p5Types from "p5";
 import { BaseElement } from "./baseElement";
 import Shape from "./shape";
 
-import { Color, Duration, IMIDI } from "@/types/editor/element";
+import { toP5Radius } from "@/libs/utils";
+import { Border, Color, Duration, IMIDI, Radius } from "@/types/editor/element";
 
 class MIDI extends BaseElement implements IMIDI {
   type!: "MIDI";
   midi: MidiJSON;
   animation: "sep2" | "sep4" | "sep8" | "scroll"; // TODO: scroll
   shape: Shape;
+  radius?: Radius;
+  border?: Border;
+
+  // MEMO
+  // shape.x: note offset x (px)
+  // shape.y: note offset y (px)
+  // shape.width: 0-100 note width (%)
+  // shape.height: note height (px)
 
   constructor(
     id: number,
@@ -26,6 +35,8 @@ class MIDI extends BaseElement implements IMIDI {
     shape: Shape,
     option?: {
       duration?: Duration;
+      radius?: Radius;
+      border?: Border;
     }
   ) {
     super(id, name, x, y, width, height, background, option?.duration);
@@ -33,42 +44,31 @@ class MIDI extends BaseElement implements IMIDI {
     this.midi = midi;
     this.animation = animation;
     this.shape = shape;
+    this.radius = option?.radius;
+    this.border = option?.border;
   }
 
   draw(p5: p5Types, currentTimeMs: number, currentBeat: number) {
-    if (!this.isDraw(currentTimeMs)) {
-      return;
-    }
-
-    p5.noStroke();
+    if (!this.isDraw(currentTimeMs)) return;
 
     // draw background
+    this.drawBorder(p5, this.border);
     p5.fill(p5.color(...this.background.rgb, this.background.alpha * 2.55));
     p5.rect(
       this.toRealX(p5, this.x),
       this.toRealY(p5, this.y),
       this.toRealX(p5, this.width),
-      this.toRealY(p5, this.height)
+      this.toRealY(p5, this.height),
+      ...toP5Radius(this.radius)
     );
 
     // draw midi
     const ppq = this.midi.header.ppq;
     const notes = this.midi.tracks[0].notes;
 
-    if (this.shape.border) {
-      p5.stroke(
-        p5.color(
-          ...this.shape.border.color.rgb,
-          this.shape.border.color.alpha * 2.55
-        )
-      );
-    } else {
-      p5.noStroke();
-    }
+    this.drawBorder(p5, this.shape.border);
 
-    p5.fill(
-      p5.color(...this.shape.background.rgb, this.shape.background.alpha * 2.55)
-    );
+    p5.fill(this.toP5Color(p5, this.shape.background));
     for (let i = 0; i < notes.length; i++) {
       const note: NoteJSON = notes[i];
       const noteBeat = note.ticks / ppq;
@@ -99,15 +99,34 @@ class MIDI extends BaseElement implements IMIDI {
       if (Math.floor(noteBeat / sep) == Math.floor(currentBeat / sep)) {
         // note.midi C3 is 48
         p5.rect(
-          this.toRealX(p5, this.x + (this.width / sep) * (noteBeat % sep)),
+          this.toRealX(
+            p5,
+            this.x + this.shape.x + (this.width / sep) * (noteBeat % sep)
+          ),
           this.toRealY(
             p5,
-            this.y + this.height - (note.midi - 48 + 1) * this.shape.height
+            this.y +
+              this.shape.y +
+              this.height -
+              (note.midi - 48 + 1) * this.shape.height
           ),
-          this.toRealX(p5, (this.width / sep) * noteWidthPerBeat),
-          this.toRealY(p5, this.shape.height)
+          this.toRealX(
+            p5,
+            (this.width / sep) * noteWidthPerBeat * (this.shape.width / 100)
+          ),
+          this.toRealY(p5, this.shape.height),
+          ...toP5Radius(this.shape.radius)
         );
       }
+    }
+  }
+
+  drawBorder(p5: p5Types, border?: Border) {
+    if (border) {
+      p5.stroke(this.toP5Color(p5, border.color));
+      p5.strokeWeight(this.toRealX(p5, border.size));
+    } else {
+      p5.noStroke();
     }
   }
 }

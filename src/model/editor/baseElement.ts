@@ -59,4 +59,8 @@ export class BaseElement implements IBaseElement {
     const virtualHeight = 720;
     return (x * canvasHeight) / virtualHeight;
   }
+
+  toP5Color(p5: p5Types, color: Color) {
+    return p5.color(...color.rgb, color.alpha * 2.55);
+  }
 }
