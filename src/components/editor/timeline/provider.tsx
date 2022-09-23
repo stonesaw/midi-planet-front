@@ -23,7 +23,7 @@ interface Props {
 export const TimelineProvider = ({ children }: Props) => {
   const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([
     {
-      id: 1,
+      id: 0,
       depth: 1,
       kind: "advz",
       color: "#FF8797",
@@ -31,7 +31,7 @@ export const TimelineProvider = ({ children }: Props) => {
       width: 140,
     },
     {
-      id: 2,
+      id: 1,
       depth: 2,
       kind: "midi",
       color: "#FFA048",
@@ -39,7 +39,7 @@ export const TimelineProvider = ({ children }: Props) => {
       width: 260,
     },
     {
-      id: 3,
+      id: 2,
       depth: 3,
       kind: "shape",
       color: "#48ff94",
@@ -47,7 +47,7 @@ export const TimelineProvider = ({ children }: Props) => {
       width: 80,
     },
     {
-      id: 4,
+      id: 3,
       depth: 2,
       kind: "midi",
       color: "#45BCFF",

@@ -1,10 +1,4 @@
-import {
-  Divider,
-  VStack,
-  Text,
-  NumberInput,
-  NumberInputField,
-} from "@chakra-ui/react";
+import { Divider, VStack } from "@chakra-ui/react";
 
 import { AppearanceSection } from "@/components/editor/params/sections/appearance";
 import { BorderSection } from "@/components/editor/params/sections/border";
@@ -33,7 +27,7 @@ export const ParamsEditor = () => {
       w="100%"
       h="100%"
     >
-      <Text color="white">デバッグ用 / len: {singleTimeLine.length}</Text>
+      {/* <Text color="white">デバッグ用 / len: {singleTimeLine.length}</Text>
       <NumberInput
         color="gray.50"
         defaultValue={selectedElementIndex}
@@ -41,8 +35,7 @@ export const ParamsEditor = () => {
         onChange={(value) => setSelectedElementIndex(Number(value))}
       >
         <NumberInputField borderColor="gray.500" pl={2} pr={2} />
-      </NumberInput>
-      {/* デバッグ用 */}
+      </NumberInput> */}
 
       {singleTimeLine[selectedElementIndex] && (
         <>
